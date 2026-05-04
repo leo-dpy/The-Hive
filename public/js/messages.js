@@ -165,7 +165,8 @@ btnStartChat.addEventListener('click', async () => {
         const data = await res.json();
         modalNew.style.display = 'none';
         newMsgUsername.value = '';
-        openChat(data.id, data.username, data.profile_picture);
+        await openChat(data.id, data.username, data.profile_picture);
+        await loadConversations(); // Force refresh de la liste pour afficher la nouvelle conversation
     } catch (e) {
         alert("Erreur lors de la recherche");
     }

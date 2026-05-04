@@ -120,7 +120,7 @@ async function loadFeed() {
                         <div class="post-actions">
                             <span class="action" onclick="react(${post.id}, 1)">▲ ${post.likes}</span>
                             <span class="action" onclick="react(${post.id}, -1)">▼ ${post.dislikes}</span>
-                            <span class="action">💬 ${post.comment_count}</span>
+                            <span class="action" onclick="window.location.href='/explore.html?post_id=${post.id}'">💬 ${post.comment_count}</span>
                         </div>
                     </div>
                 </div>

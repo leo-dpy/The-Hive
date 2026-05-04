@@ -3,174 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messages - The Hive</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">`n    <title>Messages - The Hive</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        .layout-messages {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 30px;
-            max-width: 1600px;
-            width: 100%;
-            height: 100vh;
-            padding: 20px;
-            margin: 0 auto;
-            box-sizing: border-box;
-        }
-        
-        .messages-container {
-            display: flex;
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            height: calc(100vh - 40px);
-        }
-
-        /* Left Pane */
-        .contacts-pane {
-            width: 350px;
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            background: var(--bg-color);
-        }
-        .contacts-header {
-            padding: 20px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .contacts-list {
-            flex: 1;
-            overflow-y: auto;
-        }
-        .contact-item {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            transition: background 0.2s;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .contact-item:hover, .contact-item.active {
-            background: var(--hover-bg);
-        }
-        .contact-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .contact-info {
-            flex: 1;
-            overflow: hidden;
-        }
-        .contact-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        .contact-preview {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Right Pane */
-        .chat-pane {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--bg-color);
-        }
-        .chat-empty {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .chat-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-weight: 600;
-        }
-        .chat-history {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .bubble {
-            max-width: 60%;
-            padding: 12px 18px;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-        .bubble-sent {
-            align-self: flex-end;
-            background: var(--accent-gold);
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-        .bubble-received {
-            align-self: flex-start;
-            background: var(--hover-bg);
-            border: 1px solid var(--border-color);
-            border-bottom-left-radius: 4px;
-        }
-        .chat-input-area {
-            padding: 20px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 10px;
-        }
-        .chat-input {
-            flex: 1;
-            padding: 15px;
-            border-radius: 30px;
-            border: 1px solid var(--border-color);
-            background: transparent;
-            color: var(--text-color);
-            outline: none;
-        }
-        .chat-send-btn {
-            background: var(--accent-gold);
-            border: none;
-            color: white;
-            padding: 0 25px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* Modal Nouveau Message */
-        .modal-overlay {
-            position: fixed; top:0; left:0; right:0; bottom:0;
-            background: rgba(0,0,0,0.7);
-            display: none; align-items:center; justify-content:center;
-            z-index: 1000;
-        }
-        .modal {
-            background: var(--bg-color);
-            width: 400px;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-        }
+        .layout-messages { display:grid; grid-template-columns:280px 1fr; gap:20px; max-width:1600px; width:100%; height:100vh; padding:20px; margin:0 auto; box-sizing:border-box; }
+        .messages-container { display:flex; background:var(--glass-bg-strong); backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur); border:1px solid var(--glass-border); border-radius:var(--radius-lg); overflow:hidden; height:calc(100vh - 40px); box-shadow:var(--glass-shadow); }
+        .contacts-pane { width:350px; border-right:1px solid var(--border-subtle); display:flex; flex-direction:column; }
+        .contacts-header { padding:18px 20px; font-size:1.1rem; font-weight:800; border-bottom:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; }
+        .contacts-list { flex:1; overflow-y:auto; }
+        .contact-item { padding:14px 20px; display:flex; align-items:center; gap:14px; cursor:pointer; transition:var(--transition); border-bottom:1px solid var(--border-subtle); }
+        .contact-item:hover, .contact-item.active { background:rgba(255,255,255,0.3); }
+        .contact-avatar { width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid var(--glass-border); }
+        .contact-info { flex:1; overflow:hidden; }
+        .contact-name { font-weight:600; margin-bottom:4px; font-size:0.95rem; }
+        .contact-preview { font-size:0.85rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .chat-pane { flex:1; display:flex; flex-direction:column; }
+        .chat-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0.7; }
+        .chat-header { padding:18px 20px; border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; gap:14px; font-weight:600; background:rgba(255,255,255,0.15); }
+        .chat-history { flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; }
+        .bubble { max-width:65%; padding:12px 18px; border-radius:20px; font-size:0.93rem; line-height:1.45; }
+        .bubble-sent { align-self:flex-end; background:linear-gradient(135deg,var(--accent-gold),#d4af37); color:white; border-bottom-right-radius:6px; box-shadow:0 2px 12px var(--accent-gold-glow); }
+        .bubble-received { align-self:flex-start; background:var(--glass-bg); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-bottom-left-radius:6px; }
+        .chat-input-area { padding:18px 20px; border-top:1px solid var(--border-subtle); display:flex; gap:10px; background:rgba(255,255,255,0.1); }
+        .chat-input { flex:1; padding:14px 20px; border-radius:24px; border:1px solid var(--border-subtle); background:var(--glass-bg); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); color:var(--text-color); outline:none; font-family:inherit; font-size:0.93rem; transition:var(--transition); }
+        .chat-input:focus { border-color:var(--accent-gold); box-shadow:0 0 0 3px var(--accent-gold-light); }
+        .chat-send-btn { background:linear-gradient(135deg,var(--accent-gold),#d4af37); border:none; color:white; padding:0 24px; border-radius:24px; cursor:pointer; font-weight:600; font-size:0.9rem; transition:var(--transition); box-shadow:0 2px 10px var(--accent-gold-glow); }
+        .chat-send-btn:hover { transform:translateY(-1px); box-shadow:0 4px 15px var(--accent-gold-glow); }
+        .modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; z-index:1000; }
+        .modal { background:var(--glass-bg-strong); backdrop-filter:var(--glass-blur-strong); -webkit-backdrop-filter:var(--glass-blur-strong); width:420px; border-radius:var(--radius-lg); padding:28px; border:1px solid var(--glass-border); box-shadow:0 20px 60px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.4); }
     </style>
 </head>
 <body>
@@ -213,19 +74,17 @@
                     </button>
                 </div>
                 <div class="contacts-list" id="contacts-list">
-                    <p style="text-align:center; color:#888; margin-top:20px;">Chargement...</p>
+                    <p style="text-align:center; color:var(--text-muted); margin-top:20px;">Chargement...</p>
                 </div>
             </div>
 
             <!-- Panneau Chat -->
             <div class="chat-pane" id="chat-pane" style="display:none;">
                 <div class="chat-header">
-                    <img id="chat-avatar" src="" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
-                    <span id="chat-username" style="font-size:1.1rem;"></span>
+                    <img id="chat-avatar" src="" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid var(--glass-border);">
+                    <span id="chat-username" style="font-size:1.05rem;"></span>
                 </div>
-                <div class="chat-history" id="chat-history">
-                    <!-- Bulles insérées ici -->
-                </div>
+                <div class="chat-history" id="chat-history"></div>
                 <div class="chat-input-area">
                     <input type="text" id="chat-input" class="chat-input" placeholder="Votre message...">
                     <button id="chat-send" class="chat-send-btn">Envoyer</button>
@@ -234,7 +93,7 @@
 
             <!-- Empty State -->
             <div class="chat-empty" id="chat-empty">
-                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:20px; border:2px solid var(--text-color); border-radius:50%; padding:15px;"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2z"></path></svg>
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:20px; border:2px solid var(--border-subtle); border-radius:50%; padding:15px;"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2z"></path></svg>
                 <h2 style="margin-bottom:10px;">Vos messages</h2>
                 <p style="color:var(--text-muted); margin-bottom:20px;">Envoyez des messages privés à un(e) ami(e).</p>
                 <button class="btn-small" onclick="document.getElementById('modal-new').style.display='flex'">Envoyer un message</button>
@@ -247,9 +106,9 @@
         <div class="modal">
             <h3 style="margin-bottom:20px; text-align:center;">Nouveau message</h3>
             <p style="margin-bottom:10px; font-size:0.9rem; color:var(--text-muted);">Entrez le pseudo exact de l'utilisateur :</p>
-            <input type="text" id="new-msg-username" placeholder="@pseudo" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); background:transparent; color:white; margin-bottom:20px; box-sizing:border-box;">
+            <input type="text" id="new-msg-username" placeholder="@pseudo" style="width:100%; padding:12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); background:var(--glass-bg); backdrop-filter:blur(10px); color:var(--text-color); margin-bottom:20px; box-sizing:border-box; font-family:inherit; outline:none;">
             <div style="display:flex; gap:10px; justify-content:flex-end;">
-                <button class="btn-small" style="background:transparent; border:1px solid var(--border-color);" onclick="document.getElementById('modal-new').style.display='none'">Annuler</button>
+                <button class="btn-small" style="background:var(--glass-bg); border:1px solid var(--border-subtle); color:var(--text-color);" onclick="document.getElementById('modal-new').style.display='none'">Annuler</button>
                 <button class="btn-small" id="btn-start-chat">Discuter</button>
             </div>
         </div>

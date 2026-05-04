@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explorer - The Hive</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">`n    <title>Explorer - The Hive</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -39,10 +39,15 @@
 
         <!-- Colonne Centrale -->
         <div class="feed-container">
-            <div class="feed-header">Explorer le monde de The Hive</div>
+            <div class="feed-header">
+                <nav class="breadcrumb" id="breadcrumb">
+                    <span class="breadcrumb-item active">Explorer</span>
+                </nav>
+            </div>
             
-            <div id="timeline">
-                <!-- Posts chargés ici -->
+            <div id="main-content">
+                <!-- Contenu dynamique : catégories / posts / discussion -->
+                <p style="text-align:center; color:#888; margin-top:40px;">Chargement...</p>
             </div>
         </div>
 
@@ -51,8 +56,12 @@
             <div class="widget">
                 <h3>The Hive.</h3>
                 <p style="color: var(--text-muted); font-size: 0.9rem; line-height:1.5;">
-                    Le réseau social de la ruche. Découvrez les publications de tous les membres !
+                    Le forum de la ruche. Parcourez les catégories et rejoignez les discussions !
                 </p>
+            </div>
+            <div class="widget" id="widget-categories" style="display:none;">
+                <h3>Catégories</h3>
+                <div id="sidebar-categories"></div>
             </div>
         </div>
     </div>
