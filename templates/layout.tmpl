@@ -1,0 +1,64 @@
+{{define "header"}}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{.Title}} · The Hive</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <script defer src="/static/js/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Navigation principale">
+      <a class="brand" href="/" aria-label="Accueil The Hive">
+        <span class="brand-mark">🐝</span>
+        <span>The Hive</span>
+      </a>
+      <div class="nav-links">
+        <a href="/">Accueil</a>
+        {{if .User}}
+          <a href="/thread/create">Créer un sujet</a>
+          <a href="/dashboard">Dashboard</a>
+          <form action="/auth/logout" method="post" class="inline-form">
+            <button type="submit" class="link-button">Déconnexion</button>
+          </form>
+        {{else}}
+          <a href="/login">Connexion</a>
+          <a class="button button-small" href="/register">Inscription</a>
+        {{end}}
+      </div>
+    </nav>
+  </header>
+  <main class="container main">
+    {{if .Flash}}<div class="alert alert-success" role="status">{{.Flash}}</div>{{end}}
+    {{if .Error}}<div class="alert alert-error" role="alert">{{.Error}}</div>{{end}}
+{{end}}
+
+{{define "footer"}}
+  </main>
+  <footer class="footer">
+    <div class="container footer-content">
+      <span>Projet Forum · Golang + SQLite + Vanilla Web</span>
+      <span>Sessions par cookie UUID expirant</span>
+    </div>
+  </footer>
+</body>
+</html>
+{{end}}
+
+{{define "thread_card"}}
+<article class="card thread-card">
+  <div class="thread-card-header">
+    <a class="pill" href="/category?id={{.CategoryID}}">{{.CategoryName}}</a>
+    <span class="muted">par {{.Author}} · {{.CreatedAt}}</span>
+  </div>
+  <h3><a href="/thread?id={{.ID}}">{{.Title}}</a></h3>
+  <p class="thread-excerpt">{{.Content}}</p>
+  <div class="thread-meta">
+    <span>💬 {{.CommentCount}} commentaire{{if ne .CommentCount 1}}s{{end}}</span>
+    <span>👍 {{.Likes}}</span>
+    <span>👎 {{.Dislikes}}</span>
+  </div>
+</article>
+{{end}}
