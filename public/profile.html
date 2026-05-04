@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg">`n    <title>Profil - The Hive</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>Profil - The Hive</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <style>
@@ -12,6 +14,7 @@
             border-bottom: 1px solid var(--border-color);
             text-align: center;
         }
+
         .profile-avatar {
             width: 120px;
             height: 120px;
@@ -20,11 +23,13 @@
             border: 3px solid var(--accent-gold);
             margin-bottom: 15px;
         }
+
         .profile-username {
             font-size: 1.5rem;
             font-weight: 800;
             margin-bottom: 10px;
         }
+
         .profile-bio {
             font-size: 1rem;
             color: var(--text-color);
@@ -34,27 +39,33 @@
             margin-right: auto;
             line-height: 1.5;
         }
+
         .profile-stats {
             display: flex;
             justify-content: center;
             gap: 30px;
             margin-bottom: 20px;
         }
+
         .stat-box {
             text-align: center;
         }
+
         .stat-val {
             font-size: 1.2rem;
             font-weight: 800;
         }
+
         .stat-label {
             font-size: 0.9rem;
             color: var(--text-muted);
         }
+
         .tabs {
             display: flex;
             border-bottom: 1px solid var(--border-color);
         }
+
         .tab {
             flex: 1;
             text-align: center;
@@ -64,15 +75,18 @@
             color: var(--text-muted);
             transition: all 0.2s;
         }
+
         .tab.active {
             color: var(--accent-gold);
             border-bottom: 3px solid var(--accent-gold);
         }
+
         .tab:hover {
             background-color: var(--hover-bg);
         }
     </style>
 </head>
+
 <body>
     <div class="layout">
         <!-- Sidebar Gauche -->
@@ -80,23 +94,44 @@
             <div class="logo">The <span>Hive.</span></div>
             <nav class="nav-menu">
                 <a href="/home.html" class="nav-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:15px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-right:15px;">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
                     Accueil
                 </a>
                 <a href="/explore.html" class="nav-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:15px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-right:15px;">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
                     Explorer
                 </a>
                 <a href="#" id="my-profile-link" class="nav-item active">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:15px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-right:15px;">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
                     Profil
                 </a>
                 <a href="/messages.html" class="nav-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:15px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-right:15px;">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
                     Messages
                 </a>
                 <a href="/settings.html" class="nav-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:15px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-right:15px;">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
                     Paramètres
                 </a>
             </nav>
@@ -106,12 +141,12 @@
         <!-- Colonne Centrale -->
         <div class="feed-container">
             <div class="feed-header" id="header-username">Chargement...</div>
-            
+
             <div class="profile-header" id="profile-container" style="display: none;">
                 <img id="p-avatar" src="/uploads/avatars/default.png" class="profile-avatar">
                 <div class="profile-username" id="p-username"></div>
                 <div class="profile-bio" id="p-bio"></div>
-                
+
                 <div class="profile-stats">
                     <div class="stat-box">
                         <div class="stat-val" id="p-followers">0</div>
@@ -123,7 +158,8 @@
                     </div>
                 </div>
 
-                <button class="btn-small" id="follow-btn" style="width: 200px; padding: 12px; display: none; margin: 0 auto;"></button>
+                <button class="btn-small" id="follow-btn"
+                    style="width: 200px; padding: 12px; display: none; margin: 0 auto;"></button>
             </div>
 
             <div class="tabs" style="display:none;" id="tabs-container">
@@ -132,7 +168,8 @@
             </div>
 
             <div id="timeline">
-                <p style="text-align:center; color:#888; margin-top:40px;" id="loading-msg">Chargement des données...</p>
+                <p style="text-align:center; color:#888; margin-top:40px;" id="loading-msg">Chargement des données...
+                </p>
             </div>
         </div>
 
@@ -149,4 +186,5 @@
     <script src="/js/profile.js"></script>
     <script src="/js/sidebar.js"></script>
 </body>
+
 </html>

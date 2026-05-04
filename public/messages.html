@@ -1,39 +1,235 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg">`n    <title>Messages - The Hive</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>Messages - The Hive</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        .layout-messages { display:grid; grid-template-columns:280px 1fr; gap:20px; max-width:1600px; width:100%; height:100vh; padding:20px; margin:0 auto; box-sizing:border-box; }
-        .messages-container { display:flex; background:var(--glass-bg-strong); backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur); border:1px solid var(--glass-border); border-radius:var(--radius-lg); overflow:hidden; height:calc(100vh - 40px); box-shadow:var(--glass-shadow); }
-        .contacts-pane { width:350px; border-right:1px solid var(--border-subtle); display:flex; flex-direction:column; }
-        .contacts-header { padding:18px 20px; font-size:1.1rem; font-weight:800; border-bottom:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; }
-        .contacts-list { flex:1; overflow-y:auto; }
-        .contact-item { padding:14px 20px; display:flex; align-items:center; gap:14px; cursor:pointer; transition:var(--transition); border-bottom:1px solid var(--border-subtle); }
-        .contact-item:hover, .contact-item.active { background:rgba(255,255,255,0.3); }
-        .contact-avatar { width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid var(--glass-border); }
-        .contact-info { flex:1; overflow:hidden; }
-        .contact-name { font-weight:600; margin-bottom:4px; font-size:0.95rem; }
-        .contact-preview { font-size:0.85rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-        .chat-pane { flex:1; display:flex; flex-direction:column; }
-        .chat-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0.7; }
-        .chat-header { padding:18px 20px; border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; gap:14px; font-weight:600; background:rgba(255,255,255,0.15); }
-        .chat-history { flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; }
-        .bubble { max-width:65%; padding:12px 18px; border-radius:20px; font-size:0.93rem; line-height:1.45; }
-        .bubble-sent { align-self:flex-end; background:linear-gradient(135deg,var(--accent-gold),#d4af37); color:white; border-bottom-right-radius:6px; box-shadow:0 2px 12px var(--accent-gold-glow); }
-        .bubble-received { align-self:flex-start; background:var(--glass-bg); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-bottom-left-radius:6px; }
-        .chat-input-area { padding:18px 20px; border-top:1px solid var(--border-subtle); display:flex; gap:10px; background:rgba(255,255,255,0.1); }
-        .chat-input { flex:1; padding:14px 20px; border-radius:24px; border:1px solid var(--border-subtle); background:var(--glass-bg); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); color:var(--text-color); outline:none; font-family:inherit; font-size:0.93rem; transition:var(--transition); }
-        .chat-input:focus { border-color:var(--accent-gold); box-shadow:0 0 0 3px var(--accent-gold-light); }
-        .chat-send-btn { background:linear-gradient(135deg,var(--accent-gold),#d4af37); border:none; color:white; padding:0 24px; border-radius:24px; cursor:pointer; font-weight:600; font-size:0.9rem; transition:var(--transition); box-shadow:0 2px 10px var(--accent-gold-glow); }
-        .chat-send-btn:hover { transform:translateY(-1px); box-shadow:0 4px 15px var(--accent-gold-glow); }
-        .modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; z-index:1000; }
-        .modal { background:var(--glass-bg-strong); backdrop-filter:var(--glass-blur-strong); -webkit-backdrop-filter:var(--glass-blur-strong); width:420px; border-radius:var(--radius-lg); padding:28px; border:1px solid var(--glass-border); box-shadow:0 20px 60px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.4); }
+        .layout-messages {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            max-width: 1600px;
+            width: 100%;
+            height: 100vh;
+            padding: 20px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .messages-container {
+            display: flex;
+            background: var(--glass-bg-strong);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            height: calc(100vh - 40px);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .contacts-pane {
+            width: 350px;
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contacts-header {
+            padding: 18px 20px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contacts-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .contact-item {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .contact-item:hover,
+        .contact-item.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .contact-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--glass-border);
+        }
+
+        .contact-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .contact-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+
+        .contact-preview {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+        }
+
+        .chat-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .chat-history {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bubble {
+            max-width: 65%;
+            padding: 12px 18px;
+            border-radius: 20px;
+            font-size: 0.93rem;
+            line-height: 1.45;
+        }
+
+        .bubble-sent {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--accent-gold), #d4af37);
+            color: white;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 2px 12px var(--accent-gold-glow);
+        }
+
+        .bubble-received {
+            align-self: flex-start;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-bottom-left-radius: 6px;
+        }
+
+        .chat-input-area {
+            padding: 18px 20px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 24px;
+            border: 1px solid var(--border-subtle);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-color);
+            outline: none;
+            font-family: inherit;
+            font-size: 0.93rem;
+            transition: var(--transition);
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px var(--accent-gold-light);
+        }
+
+        .chat-send-btn {
+            background: linear-gradient(135deg, var(--accent-gold), #d4af37);
+            border: none;
+            color: white;
+            padding: 0 24px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            box-shadow: 0 2px 10px var(--accent-gold-glow);
+        }
+
+        .chat-send-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px var(--accent-gold-glow);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: var(--glass-bg-strong);
+            backdrop-filter: var(--glass-blur-strong);
+            -webkit-backdrop-filter: var(--glass-blur-strong);
+            width: 420px;
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
     </style>
 </head>
+
 <body>
     <div class="layout-messages">
         <!-- Sidebar Gauche -->
@@ -41,23 +237,44 @@
             <div class="logo">The <span>Hive.</span></div>
             <nav class="nav-menu">
                 <a href="/home.html" class="nav-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:15px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-right:15px;">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
                     Accueil
                 </a>
                 <a href="/explore.html" class="nav-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:15px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-right:15px;">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
                     Explorer
                 </a>
                 <a href="#" id="my-profile-link" class="nav-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:15px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-right:15px;">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
                     Profil
                 </a>
                 <a href="/messages.html" class="nav-item active">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:15px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-right:15px;">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
                     Messages
                 </a>
                 <a href="/settings.html" class="nav-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:15px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-right:15px;">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
                     Paramètres
                 </a>
             </nav>
@@ -69,8 +286,13 @@
             <div class="contacts-pane">
                 <div class="contacts-header">
                     <span id="current-username">Messages</span>
-                    <button id="btn-new-msg" style="background:none; border:none; cursor:pointer; color:var(--text-color);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    <button id="btn-new-msg"
+                        style="background:none; border:none; cursor:pointer; color:var(--text-color);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
                     </button>
                 </div>
                 <div class="contacts-list" id="contacts-list">
@@ -81,7 +303,8 @@
             <!-- Panneau Chat -->
             <div class="chat-pane" id="chat-pane" style="display:none;">
                 <div class="chat-header">
-                    <img id="chat-avatar" src="" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid var(--glass-border);">
+                    <img id="chat-avatar" src=""
+                        style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid var(--glass-border);">
                     <span id="chat-username" style="font-size:1.05rem;"></span>
                 </div>
                 <div class="chat-history" id="chat-history"></div>
@@ -93,10 +316,15 @@
 
             <!-- Empty State -->
             <div class="chat-empty" id="chat-empty">
-                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:20px; border:2px solid var(--border-subtle); border-radius:50%; padding:15px;"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2z"></path></svg>
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    style="margin-bottom:20px; border:2px solid var(--border-subtle); border-radius:50%; padding:15px;">
+                    <path d="M22 2L11 13"></path>
+                    <path d="M22 2L15 22L11 13L2 9L22 2z"></path>
+                </svg>
                 <h2 style="margin-bottom:10px;">Vos messages</h2>
                 <p style="color:var(--text-muted); margin-bottom:20px;">Envoyez des messages privés à un(e) ami(e).</p>
-                <button class="btn-small" onclick="document.getElementById('modal-new').style.display='flex'">Envoyer un message</button>
+                <button class="btn-small" onclick="document.getElementById('modal-new').style.display='flex'">Envoyer un
+                    message</button>
             </div>
         </div>
     </div>
@@ -105,10 +333,14 @@
     <div class="modal-overlay" id="modal-new">
         <div class="modal">
             <h3 style="margin-bottom:20px; text-align:center;">Nouveau message</h3>
-            <p style="margin-bottom:10px; font-size:0.9rem; color:var(--text-muted);">Entrez le pseudo exact de l'utilisateur :</p>
-            <input type="text" id="new-msg-username" placeholder="@pseudo" style="width:100%; padding:12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); background:var(--glass-bg); backdrop-filter:blur(10px); color:var(--text-color); margin-bottom:20px; box-sizing:border-box; font-family:inherit; outline:none;">
+            <p style="margin-bottom:10px; font-size:0.9rem; color:var(--text-muted);">Entrez le pseudo exact de
+                l'utilisateur :</p>
+            <input type="text" id="new-msg-username" placeholder="@pseudo"
+                style="width:100%; padding:12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); background:var(--glass-bg); backdrop-filter:blur(10px); color:var(--text-color); margin-bottom:20px; box-sizing:border-box; font-family:inherit; outline:none;">
             <div style="display:flex; gap:10px; justify-content:flex-end;">
-                <button class="btn-small" style="background:var(--glass-bg); border:1px solid var(--border-subtle); color:var(--text-color);" onclick="document.getElementById('modal-new').style.display='none'">Annuler</button>
+                <button class="btn-small"
+                    style="background:var(--glass-bg); border:1px solid var(--border-subtle); color:var(--text-color);"
+                    onclick="document.getElementById('modal-new').style.display='none'">Annuler</button>
                 <button class="btn-small" id="btn-start-chat">Discuter</button>
             </div>
         </div>
@@ -117,4 +349,5 @@
     <script src="/js/sidebar.js"></script>
     <script src="/js/messages.js"></script>
 </body>
+
 </html>

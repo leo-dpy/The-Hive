@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg">`n    <title>The Hive</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>The Hive</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
     <div class="auth-wrapper">
         <div class="auth-container">
             <div class="logo" style="text-align:center;">The <span>Hive.</span></div>
             <p id="error-msg"></p>
-            
+
             <form id="auth-form">
                 <div class="form-group" id="username-group" style="display: none;">
                     <input type="text" id="username" placeholder="Pseudo (@nom)">
@@ -25,12 +28,14 @@
                 </div>
                 <button type="submit" class="btn-large" id="submit-btn">Se connecter</button>
             </form>
-            
-            <div style="text-align:center; margin-top:20px; cursor:pointer; color:var(--text-muted); font-size:14px;" id="toggle-mode">
+
+            <div style="text-align:center; margin-top:20px; cursor:pointer; color:var(--text-muted); font-size:14px;"
+                id="toggle-mode">
                 Pas encore dans la Ruche ? Créer un profil
             </div>
         </div>
     </div>
     <script src="/js/auth.js"></script>
 </body>
+
 </html>
