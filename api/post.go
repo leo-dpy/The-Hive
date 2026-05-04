@@ -59,16 +59,26 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ListPostsHandler(w http.ResponseWriter, r *http.Request) {
-	rows, err := database.DB.Query(`
+	categoryID := r.URL.Query().Get("category_id")
+
+	query := `
 		SELECT p.id, u.username, u.profile_picture, p.title, p.content, p.created_at,
 		(SELECT COUNT(*) FROM reactions r WHERE r.target_type = 'post' AND r.target_id = p.id AND r.value = 1) AS likes,
 		(SELECT COUNT(*) FROM reactions r WHERE r.target_type = 'post' AND r.target_id = p.id AND r.value = -1) AS dislikes,
 		(SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id) AS comment_count
 		FROM posts p
 		JOIN users u ON u.id = p.user_id
-		ORDER BY p.created_at DESC
-		LIMIT 50
-	`)
+`
+	var rows *sql.Rows
+	var err error
+
+	if categoryID != "" {
+		query += ` WHERE p.category_id = ? ORDER BY p.created_at DESC LIMIT 50`
+		rows, err = database.DB.Query(query, categoryID)
+	} else {
+		query += ` ORDER BY p.created_at DESC LIMIT 50`
+		rows, err = database.DB.Query(query)
+	}
 	if err != nil {
 		sendError(w, http.StatusInternalServerError, "Impossible de charger les posts")
 		return
@@ -85,7 +95,7 @@ func ListPostsHandler(w http.ResponseWriter, r *http.Request) {
 		p.Title = title.String
 		p.ProfilePicture = pic.String
 		if p.ProfilePicture == "" {
-			p.ProfilePicture = "/uploads/avatars/default.png"
+			p.ProfilePicture = ""
 		}
 		posts = append(posts, p)
 	}
@@ -94,4 +104,38 @@ func ListPostsHandler(w http.ResponseWriter, r *http.Request) {
 		posts = []PostResponse{}
 	}
 	sendJSON(w, http.StatusOK, posts)
+}
+
+func GetPostHandler(w http.ResponseWriter, r *http.Request) {
+	postID := r.URL.Query().Get("id")
+	if postID == "" {
+		sendError(w, http.StatusBadRequest, "ID du post manquant")
+		return
+	}
+
+	var p PostResponse
+	var title, pic sql.NullString
+	
+	err := database.DB.QueryRow(`
+		SELECT p.id, u.username, u.profile_picture, p.title, p.content, p.created_at,
+		(SELECT COUNT(*) FROM reactions r WHERE r.target_type = 'post' AND r.target_id = p.id AND r.value = 1) AS likes,
+		(SELECT COUNT(*) FROM reactions r WHERE r.target_type = 'post' AND r.target_id = p.id AND r.value = -1) AS dislikes,
+		(SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id) AS comment_count
+		FROM posts p
+		JOIN users u ON u.id = p.user_id
+		WHERE p.id = ?
+	`, postID).Scan(&p.ID, &p.Author, &pic, &title, &p.Content, &p.CreatedAt, &p.Likes, &p.Dislikes, &p.CommentCount)
+
+	if err != nil {
+		sendError(w, http.StatusNotFound, "Post introuvable")
+		return
+	}
+
+	p.Title = title.String
+	p.ProfilePicture = pic.String
+	if p.ProfilePicture == "" {
+		p.ProfilePicture = ""
+	}
+
+	sendJSON(w, http.StatusOK, p)
 }

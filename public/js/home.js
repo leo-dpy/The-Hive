@@ -1,10 +1,26 @@
 const timeline = document.getElementById('timeline');
 const postContent = document.getElementById('post-content');
 const publishBtn = document.getElementById('publish-btn');
+const categorySelect = document.getElementById('category-select');
 
-// Initialiser le WebSocket pour être prêt à recevoir des DMs (optionnel pour l'instant)
-// const ws = new WebSocket(`ws://${window.location.host}/api/ws`);
-// ws.onmessage = (e) => { console.log("Nouveau DM reçu:", JSON.parse(e.data)); };
+// Charger les catégories pour le sélecteur
+async function loadCategories() {
+    try {
+        const res = await fetch('/api/categories');
+        const categories = await res.json();
+        
+        if (categorySelect && categories.length > 0) {
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.id;
+                option.textContent = cat.name;
+                categorySelect.appendChild(option);
+            });
+        }
+    } catch (e) {
+        console.error('Erreur chargement catégories:', e);
+    }
+}
 
 async function loadFeed() {
     try {
@@ -43,7 +59,7 @@ async function loadFeed() {
                         <div class="post-actions">
                             <span class="action" onclick="react(${post.id}, 1)">▲ ${post.likes}</span>
                             <span class="action" onclick="react(${post.id}, -1)">▼ ${post.dislikes}</span>
-                            <span class="action">💬 ${post.comment_count}</span>
+                            <span class="action" onclick="window.location.href='/explore.html?post_id=${post.id}'">💬 ${post.comment_count}</span>
                         </div>
                     </div>
                 </div>
@@ -68,15 +84,25 @@ publishBtn.addEventListener('click', async () => {
     if (!content) return;
 
     publishBtn.disabled = true;
+
+    // Récupérer la catégorie sélectionnée
+    const categoryId = categorySelect ? parseInt(categorySelect.value) : null;
+
+    const body = { content };
+    if (categoryId) {
+        body.category_id = categoryId;
+    }
+
     try {
         const res = await fetch('/api/posts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content })
+            body: JSON.stringify(body)
         });
         
         if (res.ok) {
             postContent.value = '';
+            if (categorySelect) categorySelect.value = '';
             loadFeed(); // Recharger le feed pour voir le nouveau post
         }
     } catch (err) {
@@ -96,4 +122,5 @@ window.react = async (postId, value) => {
 };
 
 // Chargement initial
+loadCategories();
 loadFeed();

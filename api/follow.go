@@ -91,7 +91,7 @@ func FeedFollowingHandler(w http.ResponseWriter, r *http.Request) {
 		p.Title = title.String
 		p.ProfilePicture = pic.String
 		if p.ProfilePicture == "" {
-			p.ProfilePicture = "/uploads/avatars/default.png"
+			p.ProfilePicture = ""
 		}
 		posts = append(posts, p)
 	}

@@ -177,7 +177,7 @@ func GetConversationsHandler(w http.ResponseWriter, r *http.Request) {
 		   WHERE (sender_id = u.id AND receiver_id = ?) OR (receiver_id = u.id AND sender_id = ?)
 		) AND u.id != ?
 		ORDER BY last_time DESC
-	`, userID, userID, userID, userID, userID, userID, userID, userID, userID)
+	`, userID, userID, userID, userID, userID, userID, userID)
 
 	if err != nil {
 		sendError(w, http.StatusInternalServerError, "Erreur base de données")
@@ -199,7 +199,7 @@ func GetConversationsHandler(w http.ResponseWriter, r *http.Request) {
 		var pic, lastMsg, lastTime sql.NullString
 		if err := rows.Scan(&c.UserID, &c.Username, &pic, &lastMsg, &lastTime); err == nil {
 			c.ProfilePicture = pic.String
-			if c.ProfilePicture == "" { c.ProfilePicture = "/uploads/avatars/default.png" }
+			if c.ProfilePicture == "" { c.ProfilePicture = "" }
 			c.LastMessage = lastMsg.String
 			c.LastTime = lastTime.String
 			convos = append(convos, c)

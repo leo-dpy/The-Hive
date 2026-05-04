@@ -119,7 +119,7 @@ func GetUserProfileHandler(w http.ResponseWriter, r *http.Request) {
 
 	p.Bio = bio.String
 	p.ProfilePicture = pic.String
-	if p.ProfilePicture == "" { p.ProfilePicture = "/uploads/avatars/default.png" }
+	if p.ProfilePicture == "" { p.ProfilePicture = "" }
 
 	if visitorID > 0 && visitorID != p.ID {
 		var isF int
@@ -157,7 +157,7 @@ func GetUserPostsHandler(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(&p.ID, &p.Author, &pic, &title, &p.Content, &p.CreatedAt, &p.Likes, &p.Dislikes, &p.CommentCount); err == nil {
 			p.Title = title.String
 			p.ProfilePicture = pic.String
-			if p.ProfilePicture == "" { p.ProfilePicture = "/uploads/avatars/default.png" }
+			if p.ProfilePicture == "" { p.ProfilePicture = "" }
 			posts = append(posts, p)
 		}
 	}
@@ -194,7 +194,7 @@ func GetUserLikesHandler(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(&p.ID, &p.Author, &pic, &title, &p.Content, &p.CreatedAt, &p.Likes, &p.Dislikes, &p.CommentCount); err == nil {
 			p.Title = title.String
 			p.ProfilePicture = pic.String
-			if p.ProfilePicture == "" { p.ProfilePicture = "/uploads/avatars/default.png" }
+			if p.ProfilePicture == "" { p.ProfilePicture = "" }
 			posts = append(posts, p)
 		}
 	}
