@@ -132,3 +132,9 @@ func initSchema() {
 	}
 	log.Println("✅ Schéma MySQL initialisé avec succès.")
 }
+
+// Seed is a placeholder function to avoid compilation errors.
+func Seed() {
+	log.Println("🌱 Seeding skipped/stubbed.")
+}
+
