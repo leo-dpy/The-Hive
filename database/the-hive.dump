@@ -1,0 +1,274 @@
+-- MySQL dump 10.13  Distrib 8.0.18, for Win64 (x86_64)
+--
+-- Host: 51.254.136.117    Database: the-hive
+-- ------------------------------------------------------
+-- Server version	8.4.9
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `description` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES (1,'Général','Discussions générales autour de The Hive','2026-05-04 16:42:37'),(2,'Programmation','Entraide et astuces pour Golang, JS, etc.','2026-05-04 16:42:37'),(3,'Jeux Vidéo','Partage tes dernières découvertes','2026-05-04 16:42:37'),(5,'Technologie','Programmation, hardware, logiciels et innovations tech','2026-05-04 17:30:23'),(6,'Gaming','Jeux vidéo, e-sport et discussions entre gamers','2026-05-04 17:30:23'),(7,'Musique','Artistes, albums, concerts et découvertes musicales','2026-05-04 17:30:23'),(8,'Sport','Football, basket, fitness et compétitions sportives','2026-05-04 17:30:23'),(9,'Cinéma & Séries','Films, séries TV, critiques et recommandations','2026-05-04 17:30:23'),(10,'Études & Carrière','Cours, stages, alternances et vie étudiante','2026-05-04 17:30:23'),(11,'Art & Design','Graphisme, illustration, photographie et créativité','2026-05-04 17:30:24'),(12,'Cuisine','Recettes, astuces culinaires et découvertes gourmandes','2026-05-04 17:30:24'),(13,'Voyage','Destinations, bons plans et récits de voyages','2026-05-04 17:30:24'),(14,'Science','Physique, biologie, astronomie et découvertes scientifiques','2026-05-04 17:30:24'),(15,'Actualités','Débats et discussions sur l\'actualité du moment','2026-05-04 17:30:24');
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `comments`
+--
+
+DROP TABLE IF EXISTS `comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `comments` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `post_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `post_id` (`post_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comments`
+--
+
+LOCK TABLES `comments` WRITE;
+/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+INSERT INTO `comments` VALUES (3,2,2,'abc','2026-05-04 17:01:38'),(4,1,2,'Super initiative ! Hâte de voir cette communauté grandir 🙌','2026-05-04 17:30:28'),(5,1,3,'Merci pour la plateforme ! L\'interface est vraiment clean.','2026-05-04 17:30:28'),(6,1,5,'Hello tout le monde ! Contente d\'être ici 🐝','2026-05-04 17:30:28'),(7,1,12,'Salut depuis les étoiles ! ✨','2026-05-04 17:30:28'),(8,1,20,'Enfin un forum sympa, merci !','2026-05-04 17:30:28'),(9,2,6,'Notion pour moi aussi, avec des templates custom. Game changer !','2026-05-04 17:30:28'),(10,2,9,'Un bon planning papier et c\'est réglé. Old school mais efficace.','2026-05-04 17:30:28'),(11,2,13,'J\'utilise Todoist + Google Calendar. La combo parfaite.','2026-05-04 17:30:28'),(12,3,9,'Thé vert le matin, café l\'après-midi. Le meilleur des deux mondes ☕🍵','2026-05-04 17:30:28'),(13,3,16,'Thé matcha pour moi ! Énergie sans le crash du café.','2026-05-04 17:30:28'),(14,3,11,'Café noir, sans sucre, sans discussion ☕','2026-05-04 17:30:28'),(15,3,25,'Eau citronnée. Oui je suis cette personne 😂','2026-05-04 17:30:28'),(16,5,3,'Atomic Habits de James Clear. Un game changer pour mes habitudes.','2026-05-04 17:30:28'),(17,5,18,'L\'Étranger de Camus. Court mais tellement puissant.','2026-05-04 17:30:28'),(18,5,15,'1984 de Orwell. Plus pertinent que jamais.','2026-05-04 17:30:28'),(19,7,3,'VSCode + extensions Go = combo parfaite.','2026-05-04 17:30:28'),(20,7,6,'Neovim + tmux ici. Pas besoin de souris 😎','2026-05-04 17:30:28'),(21,7,23,'JetBrains GoLand. Cher mais tellement productif.','2026-05-04 17:30:28'),(22,7,13,'Terminal + Vim depuis un café à Bali. La belle vie.','2026-05-04 17:30:28'),(23,8,1,'Podman est top pour la sécurité, pas besoin de daemon root.','2026-05-04 17:30:28'),(24,8,3,'Je reste sur Docker pour la compatibilité.','2026-05-04 17:30:28'),(25,8,17,'Du point de vue sécu, Podman gagne haut la main.','2026-05-04 17:30:28'),(26,9,6,'Go est excellent pour le backend. Simple et rapide.','2026-05-04 17:30:29'),(27,9,1,'Je recommande le tour officiel : tour.golang.org','2026-05-04 17:30:29'),(28,9,7,'Go + MySQL c\'est une super combo. Fonce !','2026-05-04 17:30:29'),(29,9,23,'La stdlib de Go est incroyable. Pas besoin de framework.','2026-05-04 17:30:29'),(30,11,6,'Commence par TryHackMe, c\'est le meilleur pour débuter.','2026-05-04 17:30:29'),(31,11,23,'La certif CEH est un bon début, mais rien ne vaut la pratique.','2026-05-04 17:30:29'),(32,11,1,'HackTheBox pour les challenges. Addictif !','2026-05-04 17:30:29'),(33,13,1,'Flutter pour la perf, React Native pour l\'écosystème JS.','2026-05-04 17:30:29'),(34,13,22,'Flutter ! Le hot reload change la vie.','2026-05-04 17:30:29'),(35,16,1,'Elden Ring aussi ! Le DLC est incroyable.','2026-05-04 17:30:29'),(36,16,4,'Zelda Tears of the Kingdom pour moi.','2026-05-04 17:30:29'),(37,16,9,'Baldur\'s Gate 3, impossible de décrocher.','2026-05-04 17:30:29'),(38,16,24,'Je suis sur mon propre jeu... ça compte ? 😅','2026-05-04 17:30:29'),(39,17,8,'Silksong est un chef-d\'œuvre, l\'attente valait le coup !','2026-05-04 17:30:29'),(40,17,14,'Celeste reste mon indé préféré de tous les temps.','2026-05-04 17:30:29'),(41,19,2,'Godot est open source et progresse énormément. Je recommande.','2026-05-04 17:30:29'),(42,19,24,'J\'utilise Godot et c\'est parfait pour un solo dev. Fonce !','2026-05-04 17:30:29'),(43,20,8,'Baldur\'s Gate 3 a détrôné tous les RPG pour moi.','2026-05-04 17:30:29'),(44,20,14,'Final Fantasy VI mérite d\'être mentionné.','2026-05-04 17:30:29'),(45,20,24,'Disco Elysium. Pas de combat, juste du pur RPG narratif.','2026-05-04 17:30:29'),(46,24,10,'J\'écoute en boucle depuis la sortie 🎶','2026-05-04 17:30:29'),(47,24,2,'Pas encore écouté mais tu me donnes envie !','2026-05-04 17:30:29'),(48,24,22,'Pomme est incroyable live aussi, allez la voir en concert !','2026-05-04 17:30:29'),(56,31,9,'Super ! Tu peux partager le programme complet ?','2026-05-04 17:30:30'),(57,31,16,'Ajoute du yoga pour la récupération, ça change tout.','2026-05-04 17:30:30'),(58,33,2,'Severance mérite la première place !','2026-05-04 17:30:30'),(59,33,5,'J\'ajouterais Succession et Mr. Robot.','2026-05-04 17:30:30'),(60,33,14,'Et Arcane ? Meilleure adaptation de jeu vidéo.','2026-05-04 17:30:30'),(61,33,20,'Dark est sous-coté. La meilleure série de SF.','2026-05-04 17:30:30'),(62,34,1,'Villeneuve est un génie. Chaque plan est un tableau.','2026-05-04 17:30:30'),(63,34,15,'Meilleur film de SF de la décennie, sans hésiter.','2026-05-04 17:30:30'),(64,35,14,'One Piece continue de me surprendre même après 1000 épisodes.','2026-05-04 17:30:30'),(65,35,24,'Frieren est la pépite de cette saison !','2026-05-04 17:30:30'),(66,36,8,'Princesse Mononoké pour moi. Thématiques profondes.','2026-05-04 17:30:30'),(67,36,5,'Mon Voisin Totoro. La nostalgie pure.','2026-05-04 17:30:30'),(68,36,20,'Le Château Ambulant. L\'animation est juste parfaite.','2026-05-04 17:30:30'),(69,38,1,'Essaie les startups, elles sont plus flexibles pour les stages.','2026-05-04 17:30:30'),(70,38,4,'LinkedIn est ton ami ! Contacte directement les recruteurs.','2026-05-04 17:30:30'),(71,38,23,'Fais des projets Kaggle pour ton portfolio.','2026-05-04 17:30:30'),(72,40,6,'LeetCode c\'est bien mais les projets perso impressionnent plus.','2026-05-04 17:30:30'),(73,40,23,'Prépare des questions à poser. Ça montre ton intérêt.','2026-05-04 17:30:31'),(74,40,17,'Pour la cybersé, les CTF valent mieux que LeetCode.','2026-05-04 17:30:31'),(75,42,1,'Merci du retour ! Tu factures à l\'heure ou au projet ?','2026-05-04 17:30:31'),(76,42,23,'Le plus dur c\'est la régularité des revenus. Des conseils ?','2026-05-04 17:30:31'),(77,43,14,'Les bento grids sont partout en ce moment. J\'adore !','2026-05-04 17:30:31'),(78,43,19,'L\'accessibilité devrait être LA tendance prioritaire.','2026-05-04 17:30:31'),(79,47,16,'Tu peux partager la recette complète ? 🍜','2026-05-04 17:30:31'),(80,47,25,'Les ramen maison c\'est le niveau au-dessus. Bravo !','2026-05-04 17:30:31'),(81,47,7,'Le secret c\'est le bouillon. Combien de temps de cuisson ?','2026-05-04 17:30:31'),(82,49,21,'Banane + beurre de cacahuète + protéine = combo parfaite.','2026-05-04 17:30:31'),(83,49,9,'Je rajoute toujours des épinards. On sent pas le goût !','2026-05-04 17:30:31'),(84,51,11,'Quel budget mensuel à Bali ? Ça me tente grave.','2026-05-04 17:30:31'),(85,51,22,'Le wifi est fiable pour le dev ? C\'est ma plus grande peur.','2026-05-04 17:30:31'),(86,51,19,'Tu recommandes quel quartier pour le coworking ?','2026-05-04 17:30:31'),(87,53,12,'La plongée de nuit c\'est encore un autre niveau !','2026-05-04 17:30:31'),(88,53,16,'Koh Tao est magique. J\'y ai passé mon PADI.','2026-05-04 17:30:31'),(89,55,18,'Fascinant ! La méthode des transits est incroyable.','2026-05-04 17:30:31'),(90,55,3,'40 années-lumière... si proche et si loin à la fois.','2026-05-04 17:30:31'),(91,55,25,'Imagine la vie qu\'il pourrait y avoir... 🌌','2026-05-04 17:30:31'),(92,58,6,'Merci pour le résumé ! Tu devrais en faire une newsletter.','2026-05-04 17:30:31'),(93,58,23,'L\'IA domine toutes les news en ce moment.','2026-05-04 17:30:31'),(94,59,16,'J\'ai supprimé Instagram pendant 3 mois. Meilleure décision.','2026-05-04 17:30:31'),(95,59,18,'Le doom scrolling est un vrai problème. Merci d\'en parler.','2026-05-04 17:30:31'),(96,59,20,'Screen Time sur iPhone m\'a ouvert les yeux sur mon usage.','2026-05-04 17:30:32');
+/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `direct_messages`
+--
+
+DROP TABLE IF EXISTS `direct_messages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `direct_messages` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `sender_id` int NOT NULL,
+  `receiver_id` int NOT NULL,
+  `content` text NOT NULL,
+  `is_read` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `sender_id` (`sender_id`),
+  KEY `receiver_id` (`receiver_id`),
+  CONSTRAINT `direct_messages_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `direct_messages_ibfk_2` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `direct_messages`
+--
+
+LOCK TABLES `direct_messages` WRITE;
+/*!40000 ALTER TABLE `direct_messages` DISABLE KEYS */;
+INSERT INTO `direct_messages` VALUES (1,2,1,'comment va *',0,'2026-05-04 16:36:25'),(5,3,3,'Self-message test!',0,'2026-05-04 16:58:08'),(6,2,1,'oiksdàokz',0,'2026-05-04 17:02:09'),(7,2,1,'allo',0,'2026-05-04 17:08:14'),(8,2,1,'allo',0,'2026-05-04 17:08:15'),(9,2,1,'bahahahahahahahahahahahahaha',0,'2026-05-04 17:08:21'),(10,2,1,'tu fais quoi',0,'2026-05-04 17:08:24'),(11,2,1,'claude is my friend and gemini toio',0,'2026-05-04 17:08:31'),(12,2,1,'copilot pue du cuk',0,'2026-05-04 17:08:38'),(13,1,2,'Salut Bob ! Bienvenue sur The Hive 🐝',0,'2026-05-04 17:30:38'),(14,2,1,'Merci Alice ! L\'interface est super clean.',0,'2026-05-04 17:30:38'),(15,1,2,'Merci ! N\'hésite pas si tu as des suggestions.',0,'2026-05-04 17:30:38'),(16,3,1,'Hey Alice, ton post sur le setup dev m\'a donné des idées !',0,'2026-05-04 17:30:38'),(17,1,3,'Cool ! Dis-moi si tu veux qu\'on compare nos configs.',0,'2026-05-04 17:30:38'),(18,4,5,'Emma, tu vas au festival cet été ?',0,'2026-05-04 17:30:38'),(19,5,4,'Oui ! On pourrait y aller ensemble 🎵',0,'2026-05-04 17:30:38'),(20,6,3,'Charlie, t\'as essayé Podman ? Je peux t\'aider.',0,'2026-05-04 17:30:38'),(21,3,6,'Pas encore mais ça m\'intéresse, on en discute !',0,'2026-05-04 17:30:39'),(22,8,9,'Iris, tu regardes le match ce soir ?',0,'2026-05-04 17:30:39'),(23,9,8,'Évidemment ! Allez l\'OM 💙',0,'2026-05-04 17:30:39'),(24,10,4,'Diana, tes designs sont incroyables. Tu utilises quoi ?',0,'2026-05-04 17:30:39'),(25,4,10,'Merci Julien ! Figma principalement, avec Blender pour la 3D.',0,'2026-05-04 17:30:39'),(26,13,11,'Kevin, ta recette de ramen a l\'air dingue !',0,'2026-05-04 17:30:39'),(27,11,13,'Merci Max ! Je t\'envoie la recette complète.',0,'2026-05-04 17:30:39'),(28,22,24,'Yuki, ton jeu avance bien ?',0,'2026-05-04 17:30:39'),(29,24,22,'Oui ! Le prototype est jouable, je t\'envoie un lien.',0,'2026-05-04 17:30:39'),(30,17,6,'Frank, t\'as des ressources sur les CTF ?',0,'2026-05-04 17:30:39'),(31,6,17,'PicoCTF et OverTheWire pour commencer. Fonce !',0,'2026-05-04 17:30:39'),(32,14,4,'Diana, on fait un collab artistique ?',0,'2026-05-04 17:30:39'),(33,4,14,'Trop bien ! Je t\'envoie mes derniers croquis.',0,'2026-05-04 17:30:39'),(34,12,25,'Zoe, tu plonges où cet été ?',0,'2026-05-04 17:30:39'),(35,25,12,'Direction les Maldives ! Tu veux venir ?',0,'2026-05-04 17:30:39'),(36,15,20,'Tina, tu as lu quoi de bien récemment ?',0,'2026-05-04 17:30:39'),(37,20,15,'Project Hail Mary de Andy Weir. Un must-read !',0,'2026-05-04 17:30:39'),(38,2,1,'ll\'ia qui pete les plombs',0,'2026-05-04 17:32:46');
+/*!40000 ALTER TABLE `direct_messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `followers`
+--
+
+DROP TABLE IF EXISTS `followers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `followers` (
+  `follower_id` int NOT NULL,
+  `following_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`follower_id`,`following_id`),
+  KEY `following_id` (`following_id`),
+  CONSTRAINT `followers_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `followers_ibfk_2` FOREIGN KEY (`following_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `followers_chk_1` CHECK ((`follower_id` <> `following_id`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `followers`
+--
+
+LOCK TABLES `followers` WRITE;
+/*!40000 ALTER TABLE `followers` DISABLE KEYS */;
+INSERT INTO `followers` VALUES (1,2,'2026-05-04 17:30:35'),(1,3,'2026-05-04 17:30:35'),(1,6,'2026-05-04 17:30:35'),(1,12,'2026-05-04 17:30:35'),(1,23,'2026-05-04 17:30:35'),(2,1,'2026-05-04 16:38:04'),(2,4,'2026-05-04 17:30:35'),(2,8,'2026-05-04 17:30:35'),(2,24,'2026-05-04 17:30:35'),(3,1,'2026-05-04 17:30:35'),(3,6,'2026-05-04 17:30:35'),(3,7,'2026-05-04 17:30:35'),(3,23,'2026-05-04 17:30:35'),(4,1,'2026-05-04 17:30:35'),(4,5,'2026-05-04 17:30:35'),(4,14,'2026-05-04 17:30:35'),(4,19,'2026-05-04 17:30:35'),(5,1,'2026-05-04 17:30:35'),(5,4,'2026-05-04 17:30:35'),(5,10,'2026-05-04 17:30:35'),(5,16,'2026-05-04 17:30:35'),(6,1,'2026-05-04 17:30:35'),(6,3,'2026-05-04 17:30:36'),(6,17,'2026-05-04 17:30:36'),(6,23,'2026-05-04 17:30:36'),(7,1,'2026-05-04 17:30:36'),(7,3,'2026-05-04 17:30:36'),(7,12,'2026-05-04 17:30:36'),(8,9,'2026-05-04 17:30:36'),(8,14,'2026-05-04 17:30:36'),(8,20,'2026-05-04 17:30:36'),(9,5,'2026-05-04 17:30:36'),(9,8,'2026-05-04 17:30:36'),(9,21,'2026-05-04 17:30:36'),(10,1,'2026-05-04 17:30:36'),(10,4,'2026-05-04 17:30:36'),(10,22,'2026-05-04 17:30:36'),(11,13,'2026-05-04 17:30:36'),(11,16,'2026-05-04 17:30:36'),(11,25,'2026-05-04 17:30:36'),(12,1,'2026-05-04 17:30:36'),(12,18,'2026-05-04 17:30:36'),(12,25,'2026-05-04 17:30:36'),(13,1,'2026-05-04 17:30:36'),(13,11,'2026-05-04 17:30:36'),(13,22,'2026-05-04 17:30:37'),(14,4,'2026-05-04 17:30:37'),(14,8,'2026-05-04 17:30:37'),(14,24,'2026-05-04 17:30:37'),(15,1,'2026-05-04 17:30:37'),(15,12,'2026-05-04 17:30:37'),(15,20,'2026-05-04 17:30:37'),(16,5,'2026-05-04 17:30:37'),(16,9,'2026-05-04 17:30:37'),(16,21,'2026-05-04 17:30:37'),(17,1,'2026-05-04 17:30:37'),(17,6,'2026-05-04 17:30:37'),(17,23,'2026-05-04 17:30:37'),(18,7,'2026-05-04 17:30:37'),(18,12,'2026-05-04 17:30:37'),(18,25,'2026-05-04 17:30:37'),(19,4,'2026-05-04 17:30:37'),(19,13,'2026-05-04 17:30:37'),(19,14,'2026-05-04 17:30:37'),(20,1,'2026-05-04 17:30:37'),(20,8,'2026-05-04 17:30:37'),(20,15,'2026-05-04 17:30:37'),(21,5,'2026-05-04 17:30:38'),(21,9,'2026-05-04 17:30:37'),(21,16,'2026-05-04 17:30:38'),(22,10,'2026-05-04 17:30:38'),(22,13,'2026-05-04 17:30:38'),(22,24,'2026-05-04 17:30:38'),(23,1,'2026-05-04 17:30:38'),(23,6,'2026-05-04 17:30:38'),(23,17,'2026-05-04 17:30:38'),(24,2,'2026-05-04 17:30:38'),(24,14,'2026-05-04 17:30:38'),(24,22,'2026-05-04 17:30:38'),(25,11,'2026-05-04 17:30:38'),(25,12,'2026-05-04 17:30:38'),(25,18,'2026-05-04 17:30:38');
+/*!40000 ALTER TABLE `followers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `posts`
+--
+
+DROP TABLE IF EXISTS `posts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `posts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `category_id` int DEFAULT NULL,
+  `title` varchar(150) DEFAULT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `posts`
+--
+
+LOCK TABLES `posts` WRITE;
+/*!40000 ALTER TABLE `posts` DISABLE KEYS */;
+INSERT INTO `posts` VALUES (1,1,NULL,'','coucou','2026-05-04 09:08:37','2026-05-04 09:08:37'),(2,3,1,'','Test post in Programmation!','2026-05-04 16:57:02','2026-05-04 16:57:02'),(3,1,1,'Bienvenue sur The Hive ! 🐝','Salut à tous ! Ravi de lancer cette communauté. N\'hésitez pas à vous présenter !','2026-05-04 17:30:25','2026-05-04 17:30:25'),(4,3,1,'Comment vous organisez votre journée ?','Perso j\'utilise un bullet journal + Notion. Curieux de savoir comment les autres gèrent leur productivité !','2026-05-04 17:30:25','2026-05-04 17:30:25'),(5,7,1,'Café ou thé ? Le grand débat ☕🍵','Team café ici, mais je comprends les amateurs de thé. Et vous ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(6,15,1,'Vos podcasts préférés ?','Je cherche de nouveaux podcasts à écouter pendant mes trajets. Des recommandations ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(7,20,1,'Livres qui ont changé votre vie','Pour moi c\'est Sapiens de Yuval Noah Harari. Et vous, quel livre vous a marqué ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(8,11,1,'Astuces productivité que personne ne connaît','Ma meilleure astuce : la règle des 2 minutes. Si ça prend moins de 2 min, faites-le tout de suite.','2026-05-04 17:30:25','2026-05-04 17:30:25'),(9,1,2,'Mon setup dev 2026','VSCode + Go + MySQL + un bon terminal. Minimaliste mais efficace. Quel est votre setup ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(10,6,2,'Docker vs Podman en 2026','Je migre vers Podman pour mes projets perso. Des retours d\'expérience ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(11,3,2,'Apprendre Go en 2026, bonne idée ?','Go est-il toujours un bon choix pour un débutant en backend ? Des ressources à conseiller ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(12,6,2,'Linux Mint vs Ubuntu en 2026','Pour un dev qui veut quitter Windows, vous conseillez quoi ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(13,17,2,'Introduction à la cybersécurité','Par où commencer quand on veut se lancer dans la cybersécurité ? Certifications, labs, livres ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(14,23,2,'Architecture microservices : overkill ?','Pour un projet perso, est-ce que les microservices valent le coup ou c\'est du over-engineering ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(15,22,2,'Flutter vs React Native en 2026','Je dois choisir un framework mobile cross-platform. Lequel recommandez-vous et pourquoi ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(16,13,2,'Les meilleurs outils pour le remote','Notion, Slack, Linear, Figma... Quels sont vos outils indispensables pour le télétravail ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(17,1,2,'WebAssembly : l\'avenir du web ?','WASM progresse énormément. Pensez-vous que ça va remplacer JavaScript un jour ?','2026-05-04 17:30:25','2026-05-04 17:30:25'),(18,2,3,'Quel est votre jeu du moment ?','Je suis à fond sur Elden Ring. Et vous, qu\'est-ce que vous jouez ?','2026-05-04 17:30:26','2026-05-04 17:30:26'),(19,2,3,'Les meilleurs jeux indés de 2026','Hollow Knight Silksong est une tuerie ! Quels autres indés vous avez aimé ?','2026-05-04 17:30:26','2026-05-04 17:30:26'),(20,5,3,'Animal Crossing, toujours d\'actualité ?','Je viens de reprendre ma sauvegarde après 2 ans. Mon île est en ruine 😂','2026-05-04 17:30:26','2026-05-04 17:30:26'),(21,24,3,'Devenir game designer indé : par où commencer ?','Je veux créer mon propre jeu. Unity ou Godot ? Des conseils pour débuter ?','2026-05-04 17:30:26','2026-05-04 17:30:26'),(22,2,3,'Le meilleur RPG de tous les temps ?','Pour moi c\'est Chrono Trigger. Changez-moi d\'avis.','2026-05-04 17:30:26','2026-05-04 17:30:26'),(23,24,3,'Les jeux qui vous ont fait pleurer','The Last of Us, RDR2, To the Moon... Quels jeux vous ont touché émotionnellement ?','2026-05-04 17:30:26','2026-05-04 17:30:26'),(24,14,3,'Setup gaming : votre config ?','RTX 4070, Ryzen 7, 32Go RAM. Et vous, c\'est quoi votre build ?','2026-05-04 17:30:26','2026-05-04 17:30:26'),(31,9,5,'Débuter la course à pied','Je veux me mettre au running. Des conseils pour un programme débutant ?','2026-05-04 17:30:26','2026-05-04 17:30:26'),(32,9,5,'Match de ce soir : pronostics ?','PSG vs Marseille ce soir ! Qui va gagner selon vous ? ⚽','2026-05-04 17:30:26','2026-05-04 17:30:26'),(33,21,5,'Programme musculation pour débutants','Je partage mon programme de 3 jours/semaine pour ceux qui débutent. Demandez en commentaire !','2026-05-04 17:30:26','2026-05-04 17:30:26'),(34,16,5,'Yoga le matin : mes 30 jours de challenge','J\'ai fait du yoga chaque matin pendant un mois. Voici ce que j\'ai appris.','2026-05-04 17:30:26','2026-05-04 17:30:26'),(35,9,5,'Les JO 2028 : vos attentes ?','Los Angeles 2028 approche ! Quels sports vous avez hâte de suivre ?','2026-05-04 17:30:26','2026-05-04 17:30:26'),(36,8,6,'Top 5 des séries à voir absolument','1. Breaking Bad\n2. The Last of Us\n3. Severance\n4. Dark\n5. Arcane','2026-05-04 17:30:26','2026-05-04 17:30:26'),(37,4,6,'Critique : Dune Part Three','Je sors de la salle et WOW. Villeneuve a encore frappé. Vos avis ?','2026-05-04 17:30:26','2026-05-04 17:30:26'),(38,8,6,'Anime printemps 2026 : vos choix','La saison est incroyable. Je suis à fond sur Jujutsu Kaisen.','2026-05-04 17:30:26','2026-05-04 17:30:26'),(39,14,6,'Studio Ghibli : votre film préféré ?','Pour moi c\'est Le Voyage de Chihiro. Un chef-d\'œuvre indémodable.','2026-05-04 17:30:26','2026-05-04 17:30:26'),(40,8,6,'Les films qui vous ont traumatisé','Requiem for a Dream m\'a hanté pendant des semaines. Et vous ?','2026-05-04 17:30:26','2026-05-04 17:30:26'),(41,20,6,'Faut-il lire le livre avant de voir le film ?','Je suis team \'livre d\'abord\'. Mais parfois le film est meilleur. Vos exemples ?','2026-05-04 17:30:26','2026-05-04 17:30:26'),(42,7,7,'Conseils pour un stage en data science','Je cherche un stage pour cet été. Des conseils sur les entreprises qui recrutent ?','2026-05-04 17:30:27','2026-05-04 17:30:27'),(43,1,7,'Alternance vs Stage : votre avis ?','Je dois choisir entre une alternance et un stage de fin d\'études.','2026-05-04 17:30:27','2026-05-04 17:30:27'),(44,3,7,'Comment réussir ses entretiens tech ?','Partagez vos tips pour les entretiens techniques. LeetCode, projets perso, soft skills ?','2026-05-04 17:30:27','2026-05-04 17:30:27'),(45,18,7,'Études de médecine : la vérité','Je suis en 4ème année et voici ce que j\'aurais aimé savoir avant de commencer.','2026-05-04 17:30:27','2026-05-04 17:30:27'),(46,13,7,'Devenir freelance : retour d\'expérience','Après 2 ans en freelance, voici mon bilan : revenus, liberté, et galères.','2026-05-04 17:30:27','2026-05-04 17:30:27'),(47,4,8,'Tendances UI/UX 2026','Glassmorphism, neumorphism, bento grids... Quelles tendances dominent cette année ?','2026-05-04 17:30:27','2026-05-04 17:30:27'),(48,14,8,'Mes illustrations du mois','Je partage mes dernières créations. N\'hésitez pas à donner votre avis !','2026-05-04 17:30:27','2026-05-04 17:30:27'),(49,19,8,'Débuter en photo de rue','La street photography me fascine. Des conseils pour un débutant avec un smartphone ?','2026-05-04 17:30:27','2026-05-04 17:30:27'),(50,4,8,'Figma vs Sketch vs Adobe XD','Quel outil de design utilisez-vous et pourquoi ? Pour moi c\'est Figma, sans hésiter.','2026-05-04 17:30:27','2026-05-04 17:30:27'),(51,11,9,'Ma recette de ramen maison 🍜','Après 10 essais, j\'ai enfin trouvé la recette parfaite. Je vous partage tout !','2026-05-04 17:30:27','2026-05-04 17:30:27'),(52,11,9,'Meal prep du dimanche','Je prépare tous mes repas le dimanche. Gain de temps et d\'argent énorme !','2026-05-04 17:30:27','2026-05-04 17:30:27'),(53,16,9,'Smoothies protéinés : mes 5 recettes','Parfaits pour après le sport ou le petit-déj. Simples et délicieux.','2026-05-04 17:30:27','2026-05-04 17:30:27'),(54,25,9,'Cuisine du monde : vos plats préférés ?','Pad thaï, tacos, couscous... Quel est votre plat international favori ?','2026-05-04 17:30:27','2026-05-04 17:30:27'),(55,13,10,'Travailler depuis Bali : mon expérience','3 mois en tant que digital nomad à Bali. Budget, coworking, vie quotidienne.','2026-05-04 17:30:27','2026-05-04 17:30:27'),(56,11,10,'Road trip en Écosse 🏴','2 semaines à travers les Highlands. Paysages à couper le souffle !','2026-05-04 17:30:27','2026-05-04 17:30:27'),(57,25,10,'Plongée en Thaïlande','Les fonds marins de Koh Tao sont incroyables. Mon récit et mes conseils.','2026-05-04 17:30:27','2026-05-04 17:30:27'),(58,19,10,'Voyager seul : libérateur ou flippant ?','J\'ai fait mon premier voyage solo et c\'était transformateur. Vos expériences ?','2026-05-04 17:30:27','2026-05-04 17:30:27'),(59,12,11,'Actualités astronomie : nouvelle exoplanète !','Une exoplanète potentiellement habitable découverte à 40 années-lumière. Fascinant !','2026-05-04 17:30:27','2026-05-04 17:30:27'),(60,25,11,'La vie dans les abysses','Les créatures des fonds marins sont plus aliens que les aliens. Thread de photos.','2026-05-04 17:30:27','2026-05-04 17:30:27'),(61,18,11,'L\'IA en médecine : révolution ou danger ?','L\'IA aide déjà au diagnostic. Jusqu\'où ça peut aller ?','2026-05-04 17:30:27','2026-05-04 17:30:27'),(62,15,12,'L\'actu tech de la semaine','Résumé des news les plus importantes de la semaine dans le monde de la tech.','2026-05-04 17:30:27','2026-05-04 17:30:27'),(63,15,12,'Réseaux sociaux et santé mentale','De plus en plus d\'études montrent l\'impact négatif. Comment vous gérez votre usage ?','2026-05-04 17:30:27','2026-05-04 17:30:27'),(64,12,12,'La conquête spatiale en 2026','SpaceX, Blue Origin, Ariane... Où en est-on dans la course à l\'espace ?','2026-05-04 17:30:28','2026-05-04 17:30:28');
+/*!40000 ALTER TABLE `posts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reactions`
+--
+
+DROP TABLE IF EXISTS `reactions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reactions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `target_type` varchar(20) NOT NULL,
+  `target_id` int NOT NULL,
+  `value` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`target_type`,`target_id`),
+  CONSTRAINT `reactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `reactions_chk_1` CHECK ((`target_type` in (_utf8mb4'post',_utf8mb4'comment'))),
+  CONSTRAINT `reactions_chk_2` CHECK ((`value` in (1,-(1))))
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reactions`
+--
+
+LOCK TABLES `reactions` WRITE;
+/*!40000 ALTER TABLE `reactions` DISABLE KEYS */;
+INSERT INTO `reactions` VALUES (4,2,'post',1,-1,'2026-05-04 17:02:32'),(6,3,'post',1,1,'2026-05-04 17:30:32'),(7,4,'post',1,1,'2026-05-04 17:30:32'),(8,5,'post',1,1,'2026-05-04 17:30:32'),(9,12,'post',1,1,'2026-05-04 17:30:32'),(10,20,'post',1,1,'2026-05-04 17:30:32'),(11,1,'post',2,1,'2026-05-04 17:30:32'),(12,6,'post',2,1,'2026-05-04 17:30:32'),(13,9,'post',3,1,'2026-05-04 17:30:32'),(14,16,'post',3,1,'2026-05-04 17:30:32'),(15,11,'post',3,1,'2026-05-04 17:30:32'),(16,1,'post',5,1,'2026-05-04 17:30:32'),(17,3,'post',5,1,'2026-05-04 17:30:32'),(18,3,'post',7,1,'2026-05-04 17:30:32'),(19,6,'post',7,1,'2026-05-04 17:30:32'),(20,23,'post',7,1,'2026-05-04 17:30:32'),(21,1,'post',8,1,'2026-05-04 17:30:32'),(22,3,'post',8,-1,'2026-05-04 17:30:32'),(23,17,'post',8,1,'2026-05-04 17:30:32'),(24,6,'post',9,1,'2026-05-04 17:30:32'),(25,7,'post',9,1,'2026-05-04 17:30:32'),(26,23,'post',9,1,'2026-05-04 17:30:32'),(27,6,'post',11,1,'2026-05-04 17:30:33'),(28,23,'post',11,1,'2026-05-04 17:30:33'),(29,1,'post',13,1,'2026-05-04 17:30:33'),(30,22,'post',13,1,'2026-05-04 17:30:33'),(31,1,'post',16,1,'2026-05-04 17:30:33'),(32,9,'post',16,1,'2026-05-04 17:30:33'),(33,24,'post',16,1,'2026-05-04 17:30:33'),(34,8,'post',17,1,'2026-05-04 17:30:33'),(35,14,'post',17,1,'2026-05-04 17:30:33'),(36,10,'post',24,1,'2026-05-04 17:30:33'),(37,22,'post',24,1,'2026-05-04 17:30:33'),(38,4,'post',26,1,'2026-05-04 17:30:33'),(39,22,'post',26,1,'2026-05-04 17:30:33'),(40,3,'post',29,1,'2026-05-04 17:30:33'),(41,21,'post',29,1,'2026-05-04 17:30:33'),(42,2,'post',33,1,'2026-05-04 17:30:33'),(43,5,'post',33,1,'2026-05-04 17:30:33'),(44,14,'post',33,1,'2026-05-04 17:30:33'),(45,1,'post',34,1,'2026-05-04 17:30:33'),(46,15,'post',34,1,'2026-05-04 17:30:33'),(47,8,'post',36,1,'2026-05-04 17:30:33'),(48,20,'post',36,1,'2026-05-04 17:30:33'),(49,1,'post',38,1,'2026-05-04 17:30:34'),(50,23,'post',38,1,'2026-05-04 17:30:34'),(51,6,'post',40,1,'2026-05-04 17:30:34'),(52,17,'post',40,1,'2026-05-04 17:30:34'),(53,14,'post',43,1,'2026-05-04 17:30:34'),(54,19,'post',43,1,'2026-05-04 17:30:34'),(55,16,'post',47,1,'2026-05-04 17:30:34'),(56,25,'post',47,1,'2026-05-04 17:30:34'),(57,7,'post',47,1,'2026-05-04 17:30:34'),(58,11,'post',51,1,'2026-05-04 17:30:34'),(59,22,'post',51,1,'2026-05-04 17:30:34'),(60,12,'post',55,1,'2026-05-04 17:30:34'),(61,18,'post',55,1,'2026-05-04 17:30:34'),(62,25,'post',55,1,'2026-05-04 17:30:34'),(63,6,'post',58,1,'2026-05-04 17:30:34'),(64,16,'post',59,1,'2026-05-04 17:30:34'),(65,18,'post',59,1,'2026-05-04 17:30:34'),(66,20,'post',59,1,'2026-05-04 17:30:34'),(67,1,'comment',1,1,'2026-05-04 17:30:34'),(68,3,'comment',1,1,'2026-05-04 17:30:34'),(69,1,'comment',7,1,'2026-05-04 17:30:34'),(70,6,'comment',9,1,'2026-05-04 17:30:34'),(71,2,'comment',16,1,'2026-05-04 17:30:35'),(72,23,'comment',18,1,'2026-05-04 17:30:35');
+/*!40000 ALTER TABLE `reactions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sessions`
+--
+
+DROP TABLE IF EXISTS `sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sessions` (
+  `id` char(36) NOT NULL,
+  `user_id` int NOT NULL,
+  `expires_at` timestamp NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sessions`
+--
+
+LOCK TABLES `sessions` WRITE;
+/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+INSERT INTO `sessions` VALUES ('334d09bf-b50d-49e0-88d2-e04f2dc34a94',2,'2026-05-11 17:01:19','2026-05-04 17:01:18'),('33ab11aa-26fb-4443-acf9-ac62acdca443',2,'2026-05-11 16:35:51','2026-05-04 16:35:51'),('6a564db1-674a-4b9e-bb62-ca2c885ad48f',1,'2026-05-11 09:07:40','2026-05-04 09:07:40'),('6d715a8d-d3c4-4850-aa39-c32c119cf23a',2,'2026-05-11 18:25:39','2026-05-04 18:25:37'),('75f67264-638b-4c56-82e5-c2ef57c33008',3,'2026-05-11 16:56:29','2026-05-04 16:56:29'),('90e4d9af-3ad0-4430-82fa-750ee1a1f59d',2,'2026-05-11 17:42:32','2026-05-04 17:42:31'),('ac97ca48-017a-4ca9-b174-62e34dd5068f',1,'2026-05-11 09:23:41','2026-05-04 09:23:41'),('b55191f5-6897-4a03-b9b1-4adcb87ab1ad',2,'2026-05-11 18:27:13','2026-05-04 18:27:11'),('d5000f5a-2a8f-49dd-940e-e7d666edb3d8',4,'2026-05-11 17:39:31','2026-05-04 17:39:30');
+/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `bio` text,
+  `profile_picture` varchar(255) DEFAULT '/uploads/avatars/default.png',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Lowaax','florin.hamelin@gmail.com','$2a$10$.hTA3LrruyhfJ6ayORLe2.kCrmeuhCp2TtJXqS/2ExAzBWi6t/Kw2','2026-05-04 09:07:40','nique ta race','/uploads/avatars/1_1777887354.png'),(2,'leo','leodupuy09@gmail.com','$2a$10$ONVMzaqId/jbDyb/ejd.I.aBvRZ5Aa.K4.n8OJpoJb4vysmvwQqB.','2026-05-04 16:35:51',NULL,'/uploads/avatars/default.png'),(3,'testuser','test@test.com','$2a$10$72wd99BP7WB2DvZUFdlv8O0vlQtHmgDbvNJ2GVp/Q8WLiQhfMBKBy','2026-05-04 16:56:29',NULL,'/uploads/avatars/default.png'),(4,'alice','alice@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Développeuse full-stack passionnée de Go 🐝','/uploads/avatars/default.png'),(5,'bob','bob@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Gamer invétéré et amateur de café ☕','/uploads/avatars/default.png'),(6,'charlie','charlie@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Étudiant en informatique, curieux de tout','/uploads/avatars/default.png'),(7,'diana','diana@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Designer UI/UX et photographe amateur 📸','/uploads/avatars/default.png'),(8,'emma','emma@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Fan de musique indie et de randonnée 🎵','/uploads/avatars/default.png'),(9,'frank','frank@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','DevOps engineer, Linux enthusiast 🐧','/uploads/avatars/default.png'),(10,'grace','grace@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Data scientist en herbe, amatrice de thé 🍵','/uploads/avatars/default.png'),(11,'hugo','hugo@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Passionné de cinéma et de séries 🎬','/uploads/avatars/default.png'),(12,'iris','iris@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Sportive, fan de basket et de running 🏀','/uploads/avatars/default.png'),(13,'julien','julien@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Musicien amateur et développeur web 🎸','/uploads/avatars/default.png'),(14,'kevin','kevin@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Cuisinier du dimanche et voyageur 🍳','/uploads/avatars/default.png'),(15,'luna','luna@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Astronome amateur, rêveuse éternelle 🌙','/uploads/avatars/default.png'),(16,'max','max@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Freelance dev, digital nomad 🌍','/uploads/avatars/default.png'),(17,'nina','nina@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Illustratrice et fan d\'anime 🎨','/uploads/avatars/default.png'),(18,'oscar','oscar@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Journaliste en herbe, lecteur compulsif 📰','/uploads/avatars/default.png'),(19,'pauline','pauline@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Prof de yoga et amatrice de smoothies 🧘','/uploads/avatars/default.png'),(20,'quentin','quentin@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:24','Ingénieur réseau, passionné de cybersécurité 🔐','/uploads/avatars/default.png'),(21,'rachel','rachel@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:25','Étudiante en médecine, fan de true crime 🔬','/uploads/avatars/default.png'),(22,'sam','sam@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:25','Skateur et photographe urbain 🛹','/uploads/avatars/default.png'),(23,'tina','tina@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:25','Community manager et bookworm 📚','/uploads/avatars/default.png'),(24,'victor','victor@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:25','Coach sportif et nutritionniste 💪','/uploads/avatars/default.png'),(25,'wendy','wendy@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:25','Développeuse mobile, fan de K-pop 📱','/uploads/avatars/default.png'),(26,'xavier','xavier@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:25','Architecte logiciel, mentor tech 🏗️','/uploads/avatars/default.png'),(27,'yuki','yuki@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:25','Game designer indé et streameuse 🎮','/uploads/avatars/default.png'),(28,'zoe','zoe@hive.dev','$2a$10$HCqzQPSGbm4AEEkfxmqipODBwU3UAlndJHJZgeLhbIZEq419C5a8i','2026-05-04 17:30:25','Biologiste marine et plongeuse 🐠','/uploads/avatars/default.png');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'the-hive'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-05-04 20:41:58
