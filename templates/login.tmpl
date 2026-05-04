@@ -1,0 +1,21 @@
+{{define "login"}}
+{{template "header" .}}
+<section class="auth-layout">
+  <div class="auth-copy">
+    <p class="eyebrow">Connexion</p>
+    <h1>Retour dans la ruche</h1>
+    <p>Connecte-toi pour créer des sujets, commenter et réagir aux discussions.</p>
+  </div>
+  <form class="card form-card" action="/auth/login" method="post">
+    <label for="identifier">Pseudo ou email</label>
+    <input id="identifier" type="text" name="identifier" required autocomplete="username">
+
+    <label for="password">Mot de passe</label>
+    <input id="password" type="password" name="password" required autocomplete="current-password">
+
+    <button class="button full-width" type="submit">Se connecter</button>
+    <p class="muted centered">Pas encore de compte ? <a href="/register">Créer un compte</a></p>
+  </form>
+</section>
+{{template "footer" .}}
+{{end}}

@@ -1,0 +1,30 @@
+{{define "create_thread"}}
+{{template "header" .}}
+<section class="page-title narrow">
+  <p class="eyebrow">Espace membre</p>
+  <h1>Créer un sujet</h1>
+  <p>Chaque sujet doit être rattaché à une catégorie pour respecter le système de filtrage.</p>
+</section>
+
+<form class="card form-card narrow" action="/thread/create" method="post">
+  <label for="category_id">Catégorie</label>
+  <select id="category_id" name="category_id" required>
+    <option value="">Sélectionner une catégorie</option>
+    {{range .Categories}}
+      <option value="{{.ID}}">{{.Name}}</option>
+    {{end}}
+  </select>
+
+  <label for="title">Titre</label>
+  <input id="title" type="text" name="title" minlength="3" maxlength="140" required placeholder="Ex : Comment structurer les routes Go ?">
+
+  <label for="content">Contenu</label>
+  <textarea id="content" name="content" rows="9" minlength="10" maxlength="6000" required placeholder="Explique ton sujet clairement..."></textarea>
+
+  <div class="form-footer">
+    <span class="counter" data-for="content">0 / 6000</span>
+    <button class="button" type="submit">Publier le sujet</button>
+  </div>
+</form>
+{{template "footer" .}}
+{{end}}
