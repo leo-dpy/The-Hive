@@ -1,56 +1,124 @@
 # 🐝 The Hive - Forum Project
 
-Bienvenue sur le dépôt de **The Hive**, un projet de création d'un forum en ligne classique en partant de zéro. Ce projet est conçu pour être déployable sur un VPS et respecte des contraintes techniques strictes d'architecture.
+Forum classique développé avec un serveur web en **Golang pur**, une base **SQLite**, des templates **HTML/CSS** et du **JavaScript Vanilla**.
 
-## 🛠️ Stack Technique & Contraintes
+## Fonctionnalités incluses
 
-Ce projet est développé avec les technologies suivantes pour garantir légèreté et contrôle total :
-* **Backend :** Serveur web en Golang pur.
-* **Base de données :** Gérée et administrée avec SQLite (`sqlite3`).
-* **Frontend :** HTML5, CSS3, JS pur (Vanilla).
-* **Dépendances autorisées :** Uniquement les packages standards de Go, complétés par :
-    * `bcrypt` : Pour le hashage sécurisé des mots de passe.
-    * `uuid` : Pour la gestion des sessions de connexion via cookies (avec temps d'expiration).
-    * `go-sqlite3` : Driver pour la base de données SQLite.
-* **Architecture de navigation :** Le site respecte la règle stricte d'une URL par page.
+- Consultation publique des catégories, sujets et commentaires.
+- Inscription et connexion utilisateur.
+- Hashage des mots de passe avec `bcrypt`.
+- Sessions par cookie `uuid` avec expiration de 7 jours.
+- Création de sujets liés à une catégorie.
+- Ajout de commentaires sur un sujet.
+- Likes/dislikes sur les sujets et les commentaires.
+- Dashboard membre avec filtrage : sujets postés et sujets likés.
+- Une URL par page : `/`, `/category`, `/thread`, `/login`, `/register`, `/thread/create`, `/dashboard`.
 
-## 🗺️ Architecture du Site (Routage)
+## Stack et dépendances
 
-L'application est divisée entre un espace public accessible à tous et un espace membre sécurisé.
+Packages externes utilisés uniquement :
 
-### 🌍 Espace Public (Visiteurs non connectés)
-L'utilisateur non connecté peut lire les sujets, posts et commentaires.
-* `GET /` : Page d'accueil (Liste des catégories et sujets récents).
-* `GET /category?id=X` : Liste des sujets liés à une catégorie spécifique.
-* `GET /thread?id=Y` : Lecture d'un sujet, de son post principal et de ses commentaires associés.
-* `GET /login` : Page contenant le formulaire de connexion.
-* `GET /register` : Page contenant le formulaire d'inscription.
+```bash
+golang.org/x/crypto/bcrypt
+github.com/google/uuid
+modernc.org/sqlite
+```
 
-### 🔒 Espace Membre (Utilisateurs connectés)
-L'utilisateur connecté possède les droits de création et d'interaction.
-* `GET /thread/create` : Page pour créer un nouveau sujet (lié à une catégorie).
-* `GET /dashboard` : Espace personnel intégrant le système de filtrage pour afficher les sujets likés ou postés par l'utilisateur.
+Le reste utilise la bibliothèque standard Go : `net/http`, `html/template`, `database/sql`, etc.
 
-### ⚙️ Routes d'Action (Endpoints API internes)
-Ces routes ne retournent pas de pages HTML mais traitent les formulaires (méthode `POST`) :
-* `POST /auth/register` : Traite l'inscription et hashe le mot de passe.
-* `POST /auth/login` : Vérifie les identifiants et génère le cookie de session `uuid`.
-* `POST /auth/logout` : Détruit le cookie de session.
-* `POST /comment/add` : Ajoute un commentaire à un post existant.
-* `POST /react` : Gère les likes et dislikes sur les posts et commentaires.
+## Installation
 
-## 🗄️ Structure de la Base de Données
+```bash
+git clone <ton-repo> the-hive
+cd the-hive
+go mod tidy
+go run .
+```
 
-La base de données relationnelle SQLite est structurée autour de 5 tables principales :
-1.  **Users :** Stocke les identifiants, emails et mots de passe hashés.
-2.  **Categories :** Définit les sections du forum pour le système de filtrage.
-3.  **Threads :** Les sujets de discussion, liés à un utilisateur et une catégorie.
-4.  **Comments :** Les réponses apportées aux sujets.
-5.  **Reactions :** Table de liaison gérant les Likes/Dislikes sur les threads et les comments.
+L'application démarre par défaut sur :
 
-## 👥 Équipe et Répartition
+```text
+http://localhost:8080
+```
 
-Le projet est divisé en trois pôles d'expertise :
-* **Dev 1 (Socle BDD) :** Conception du schéma SQLite, requêtes SQL et structures Go.
-* **Dev 2 (Core Backend) :** Serveur Go, routage, authentification (`bcrypt`) et sessions (`uuid`).
-* **Dev 3 (Intégration Frontend) :** Templates HTML/CSS, formulaires et rendu visuel.
+Tu peux changer le port avec :
+
+```bash
+APP_ADDR=:3000 go run .
+```
+
+## Base de données
+
+La base SQLite est créée automatiquement au lancement dans :
+
+```text
+data/hive.db
+```
+
+Les catégories par défaut sont insérées automatiquement si la table `categories` est vide.
+
+### Tables principales
+
+- `users`
+- `categories`
+- `threads`
+- `comments`
+- `reactions`
+
+Une table technique `sessions` est aussi utilisée pour conserver les sessions UUID et leur expiration.
+
+## Routes
+
+### Pages publiques
+
+| Méthode | URL | Rôle |
+|---|---|---|
+| GET | `/` | Accueil, catégories, sujets récents |
+| GET | `/category?id=X` | Sujets d'une catégorie |
+| GET | `/thread?id=Y` | Sujet, contenu, commentaires |
+| GET | `/login` | Page de connexion |
+| GET | `/register` | Page d'inscription |
+
+### Pages membres
+
+| Méthode | URL | Rôle |
+|---|---|---|
+| GET | `/thread/create` | Formulaire de création de sujet |
+| POST | `/thread/create` | Création du sujet |
+| GET | `/dashboard` | Sujets postés ou likés |
+
+### Actions internes
+
+| Méthode | URL | Rôle |
+|---|---|---|
+| POST | `/auth/register` | Inscription |
+| POST | `/auth/login` | Connexion |
+| POST | `/auth/logout` | Déconnexion |
+| POST | `/comment/add` | Ajout de commentaire |
+| POST | `/react` | Like/dislike |
+
+## Lancer sur un VPS
+
+1. Installer Go. SQLite est utilisé via le driver Go, donc aucune installation SQLite séparée n’est nécessaire pour lancer le projet.
+2. Copier le dossier du projet sur le serveur.
+3. Exécuter `go mod tidy` puis `go build -o the-hive`.
+4. Lancer le binaire : `APP_ADDR=:8080 ./the-hive`.
+5. Option conseillé : placer l'application derrière Nginx avec HTTPS.
+
+> Note : cette version utilise un driver SQLite sans CGO, donc aucun GCC/MSYS2 n’est nécessaire.
+
+## Variante Windows sans MSYS2 / sans GCC
+
+Cette version utilise `modernc.org/sqlite`, un driver SQLite compatible avec `database/sql` qui ne nécessite pas CGO.
+
+Commandes sous PowerShell :
+
+```powershell
+go env -w CGO_ENABLED=0
+go mod tidy
+go run .
+```
+
+Puis ouvrir : http://localhost:8080
+
+> Attention : cette variante remplace `github.com/mattn/go-sqlite3` par `modernc.org/sqlite` pour éviter l'installation de GCC/MSYS2 sur Windows. Si votre correction impose strictement `go-sqlite3`, il faudra reprendre la version CGO.
