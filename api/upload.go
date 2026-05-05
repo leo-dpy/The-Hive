@@ -1,13 +1,12 @@
 package api
 
 import (
+	"encoding/base64"
 	"io"
 	"net/http"
-	"os"
 	"path/filepath"
+	"strings"
 	"the-hive/database"
-	"time"
-	"fmt"
 )
 
 func UploadAvatarHandler(w http.ResponseWriter, r *http.Request) {
@@ -23,29 +22,34 @@ func UploadAvatarHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	ext := filepath.Ext(handler.Filename)
+	ext := strings.ToLower(filepath.Ext(handler.Filename))
 	if ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".gif" {
 		sendError(w, http.StatusBadRequest, "Seules les images (jpg, png, gif) sont autorisées")
 		return
 	}
 
-	filename := fmt.Sprintf("%d_%d%s", userID, time.Now().Unix(), ext)
-	savePath := filepath.Join("public", "uploads", "avatars", filename)
-	dbPath := "/uploads/avatars/" + filename
+	// Déterminer le type MIME
+	mimeTypes := map[string]string{
+		".jpg":  "image/jpeg",
+		".jpeg": "image/jpeg",
+		".png":  "image/png",
+		".gif":  "image/gif",
+	}
+	mimeType := mimeTypes[ext]
 
-	dst, err := os.Create(savePath)
+	// Lire le fichier en mémoire
+	data, err := io.ReadAll(file)
 	if err != nil {
-		sendError(w, http.StatusInternalServerError, "Erreur lors de la sauvegarde")
-		return
-	}
-	defer dst.Close()
-
-	if _, err := io.Copy(dst, file); err != nil {
-		sendError(w, http.StatusInternalServerError, "Erreur d'écriture de l'image")
+		sendError(w, http.StatusInternalServerError, "Erreur de lecture de l'image")
 		return
 	}
 
-	_, err = database.DB.Exec(`UPDATE users SET profile_picture = ? WHERE id = ?`, dbPath, userID)
+	// Convertir en base64 data URI
+	b64 := base64.StdEncoding.EncodeToString(data)
+	dataURI := "data:" + mimeType + ";base64," + b64
+
+	// Stocker directement dans la base de données
+	_, err = database.DB.Exec(`UPDATE users SET profile_picture = ? WHERE id = ?`, dataURI, userID)
 	if err != nil {
 		sendError(w, http.StatusInternalServerError, "Erreur base de données")
 		return
@@ -53,6 +57,6 @@ func UploadAvatarHandler(w http.ResponseWriter, r *http.Request) {
 
 	sendJSON(w, http.StatusOK, map[string]string{
 		"message": "Avatar mis à jour",
-		"url":     dbPath,
+		"url":     dataURI,
 	})
 }

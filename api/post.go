@@ -7,6 +7,8 @@ import (
 	"the-hive/database"
 )
 
+const defaultAvatar = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNTAiIGZpbGw9IiMyYTJhMmEiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjM4IiByPSIxNiIgZmlsbD0iIzU1NSIvPjxlbGxpcHNlIGN4PSI1MCIgY3k9IjgwIiByeD0iMjgiIHJ5PSIyMiIgZmlsbD0iIzU1NSIvPjwvc3ZnPg==`
+
 type CreatePostRequest struct {
 	CategoryID *int   `json:"category_id"`
 	Title      string `json:"title"`
@@ -95,7 +97,7 @@ func ListPostsHandler(w http.ResponseWriter, r *http.Request) {
 		p.Title = title.String
 		p.ProfilePicture = pic.String
 		if p.ProfilePicture == "" {
-			p.ProfilePicture = ""
+			p.ProfilePicture = defaultAvatar
 		}
 		posts = append(posts, p)
 	}
@@ -134,7 +136,7 @@ func GetPostHandler(w http.ResponseWriter, r *http.Request) {
 	p.Title = title.String
 	p.ProfilePicture = pic.String
 	if p.ProfilePicture == "" {
-		p.ProfilePicture = ""
+		p.ProfilePicture = defaultAvatar
 	}
 
 	sendJSON(w, http.StatusOK, p)

@@ -19,7 +19,7 @@ async function loadProfile() {
         usernameInput.value = data.username || '';
         emailInput.value = data.email || '';
         bioInput.value = data.bio || '';
-        currentAvatar.src = data.profile_picture || '/uploads/avatars/default.png';
+        currentAvatar.src = data.profile_picture || '';
     } catch (err) {
         msg.textContent = "Erreur de connexion";
         msg.style.color = "#e74c3c";

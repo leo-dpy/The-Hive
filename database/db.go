@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     bio TEXT,
-    profile_picture VARCHAR(255),
+    profile_picture LONGTEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -131,6 +131,28 @@ func initSchema() {
 		log.Fatalf("❌ Erreur lors de l'exécution du schéma MySQL: %v", err)
 	}
 	log.Println("✅ Schéma MySQL initialisé avec succès.")
+	runMigrations()
+}
+
+func runMigrations() {
+	// Migration: Agrandir la colonne profile_picture pour supporter le base64
+	_, err := DB.Exec(`ALTER TABLE users MODIFY COLUMN profile_picture LONGTEXT`)
+	if err != nil {
+		log.Printf("⚠️ Migration profile_picture: %v (probablement déjà appliquée)", err)
+	}
+
+	// Migration: Mettre un avatar par défaut pour les utilisateurs qui n'en ont pas
+	defaultAvatar := `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNTAiIGZpbGw9IiMyYTJhMmEiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjM4IiByPSIxNiIgZmlsbD0iIzU1NSIvPjxlbGxpcHNlIGN4PSI1MCIgY3k9IjgwIiByeD0iMjgiIHJ5PSIyMiIgZmlsbD0iIzU1NSIvPjwvc3ZnPg==`
+	
+	result, err := DB.Exec(`UPDATE users SET profile_picture = ? WHERE profile_picture IS NULL OR profile_picture = '' OR profile_picture LIKE '/uploads/%'`, defaultAvatar)
+	if err != nil {
+		log.Printf("⚠️ Migration avatar par défaut: %v", err)
+	} else {
+		rows, _ := result.RowsAffected()
+		if rows > 0 {
+			log.Printf("✅ %d utilisateur(s) mis à jour avec l'avatar par défaut", rows)
+		}
+	}
 }
 
 // Seed is a placeholder function to avoid compilation errors.
