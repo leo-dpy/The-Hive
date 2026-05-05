@@ -29,6 +29,17 @@ func Connect() {
 	}
 
 	var err error
+	// On masque le mot de passe dans les logs pour la sécurité
+	maskedDSN := dsn
+	if strings.Contains(dsn, ":") && strings.Contains(dsn, "@") {
+		parts := strings.SplitN(dsn, "@", 2)
+		creds := strings.SplitN(parts[0], ":", 2)
+		if len(creds) > 1 {
+			maskedDSN = creds[0] + ":****@" + parts[1]
+		}
+	}
+	log.Printf("Connecting to MySQL with DSN: %s", maskedDSN)
+
 	DB, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatalf("❌ Erreur lors de l'ouverture de la connexion MySQL: %v", err)
