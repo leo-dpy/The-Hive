@@ -16,6 +16,9 @@ var DB *sql.DB
 // Connect initialise la connexion à la base de données MySQL.
 func Connect() {
 	dbURL := config.GetEnv("DATABASE_URL", "")
+	if dbURL == "" {
+		log.Fatalf("❌ La variable d'environnement DATABASE_URL est vide. Veuillez la configurer.")
+	}
 
 	dsn := dbURL
 	// Conversion de l'URL mysql:// au format DSN requis par le driver go-sql-driver/mysql
