@@ -50,7 +50,7 @@ func CurrentUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	pic := profilePicture.String
 	if pic == "" {
-		pic = ""
+		pic = defaultAvatar
 	}
 
 	sendJSON(w, http.StatusOK, map[string]interface{}{

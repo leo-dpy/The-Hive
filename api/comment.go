@@ -74,7 +74,7 @@ func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 		var pic sql.NullString
 		if err := rows.Scan(&c.ID, &c.Author, &pic, &c.Content, &c.CreatedAt); err == nil {
 			c.ProfilePicture = pic.String
-			if c.ProfilePicture == "" { c.ProfilePicture = "" }
+			if c.ProfilePicture == "" { c.ProfilePicture = defaultAvatar }
 			comments = append(comments, c)
 		}
 	}
