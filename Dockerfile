@@ -34,9 +34,6 @@ COPY --from=builder /app/the-hive .
 # Copier les fichiers statiques
 COPY --from=builder /app/public ./public
 
-# Copier le schéma SQL
-COPY --from=builder /app/database/schema.sql ./database/schema.sql
-
 # Créer le dossier uploads pour les avatars (volume persistant)
 RUN mkdir -p /app/public/uploads/avatars
 

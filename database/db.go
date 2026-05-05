@@ -15,7 +15,7 @@ var DB *sql.DB
 
 // Connect initialise la connexion à la base de données MySQL.
 func Connect() {
-	dbURL := config.GetEnv("DATABASE_URL", "mysql://root:root@127.0.0.1:3306/hive_db")
+	dbURL := config.GetEnv("DATABASE_URL")
 
 	dsn := dbURL
 	// Conversion de l'URL mysql:// au format DSN requis par le driver go-sql-driver/mysql
