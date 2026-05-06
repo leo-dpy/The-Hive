@@ -36,7 +36,6 @@ COPY --from=builder /app/public ./public
 RUN mkdir -p /app/public/uploads/avatars
 
 # Définir le port d'écoute à 80 et l'exposer
-ENV APP_ADDR=":80"
 EXPOSE 80
 
 # Lancer l'application
