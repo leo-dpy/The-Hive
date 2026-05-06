@@ -3,7 +3,7 @@
 # ════════════════════════════════════════════
 
 # ── Stage 1: Build ──
-FROM golang:1.25-alpine AS builder
+FROM golang:1.22-alpine AS builder
 
 WORKDIR /app
 
@@ -14,31 +14,30 @@ RUN apk add --no-cache git
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copier le reste du code
+# Copier tout le reste du code source
 COPY . .
 
-# Compiler le binaire
+# Compiler l'application de façon statique
 RUN CGO_ENABLED=0 GOOS=linux go build -o the-hive .
 
 # ── Stage 2: Runtime ──
-FROM alpine:3.20
+FROM alpine:latest
 
 WORKDIR /app
 
-# Certificats SSL (pour les connexions DB externes)
+# Certificats SSL (pour les connexions DB externes) et fuseau horaire
 RUN apk add --no-cache ca-certificates tzdata
 
-# Copier le binaire compilé
+# Copier le binaire et le dossier public depuis le builder
 COPY --from=builder /app/the-hive .
-
-# Copier les fichiers statiques
 COPY --from=builder /app/public ./public
 
 # Créer le dossier uploads pour les avatars (volume persistant)
 RUN mkdir -p /app/public/uploads/avatars
 
-# Port exposé
-EXPOSE 8080
+# Définir le port d'écoute à 80 et l'exposer
+ENV APP_ADDR=":80"
+EXPOSE 80
 
-# Lancement
+# Lancer l'application
 CMD ["./the-hive"]
