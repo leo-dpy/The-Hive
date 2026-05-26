@@ -14,6 +14,11 @@ func Start() {
 
 	// Static files routing
 	fs := http.FileServer(http.Dir("public"))
+	
+	// Rediriger la racine vers le feed (au lieu de la page de login)
+	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/home.html", http.StatusFound)
+	})
 	mux.Handle("/", fs)
 
 	// API routes (Publiques)

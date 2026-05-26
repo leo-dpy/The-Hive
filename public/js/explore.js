@@ -251,7 +251,7 @@ async function showPost(postId) {
                 </div>
                 
                 <div class="comment-form" id="comment-form">
-                    <textarea id="comment-input" placeholder="Ajouter un commentaire..." rows="3"></textarea>
+                    <textarea id="comment-input" placeholder="Ajouter un commentaire..." rows="3" onfocus="handleCommentFocus(event)"></textarea>
                     <div style="display:flex; justify-content:flex-end; margin-top:10px;">
                         <button class="btn-small" id="comment-submit">Commenter</button>
                     </div>
@@ -299,34 +299,36 @@ function renderComment(c) {
 }
 
 async function submitComment(postId) {
-    const input = document.getElementById('comment-input');
-    const content = input.value.trim();
-    if (!content) return;
+    requireAuth(async () => {
+        const input = document.getElementById('comment-input');
+        const content = input.value.trim();
+        if (!content) return;
 
-    const btn = document.getElementById('comment-submit');
-    btn.disabled = true;
-    btn.textContent = 'Envoi...';
+        const btn = document.getElementById('comment-submit');
+        btn.disabled = true;
+        btn.textContent = 'Envoi...';
 
-    try {
-        const res = await fetch('/api/comments', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ post_id: postId, content })
-        });
+        try {
+            const res = await fetch('/api/comments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ post_id: postId, content })
+            });
 
-        if (res.ok) {
-            input.value = '';
-            // Recharger la vue du post pour voir le nouveau commentaire
-            showPost(postId);
-        } else {
-            const data = await res.json();
-            alert(data.error || "Erreur lors de l'envoi du commentaire. Êtes-vous connecté ?");
+            if (res.ok) {
+                input.value = '';
+                // Recharger la vue du post pour voir le nouveau commentaire
+                showPost(postId);
+            } else {
+                const data = await res.json();
+                alert(data.error || "Erreur lors de l'envoi du commentaire.");
+            }
+        } catch (e) {
+            alert("Erreur réseau");
         }
-    } catch (e) {
-        alert("Erreur réseau");
-    }
-    btn.disabled = false;
-    btn.textContent = 'Commenter';
+        btn.disabled = false;
+        btn.textContent = 'Commenter';
+    });
 }
 
 // ── Utilitaires ──
@@ -336,20 +338,33 @@ function escapeHTML(str) {
     return div.innerHTML;
 }
 
-window.react = async (postId, value) => {
-    await fetch('/api/react', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ target_type: 'post', target_id: postId, value })
+window.react = (postId, value) => {
+    requireAuth(async () => {
+        await fetch('/api/react', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ target_type: 'post', target_id: postId, value })
+        });
+        // Recharger la vue actuelle
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('post_id')) {
+            showPost(parseInt(params.get('post_id')));
+        } else if (params.get('category_id')) {
+            const catId = parseInt(params.get('category_id'));
+            const cat = allCategories.find(c => c.id === catId);
+            showCategory(catId, cat ? cat.name : 'Catégorie');
+        }
     });
-    // Recharger la vue actuelle
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('post_id')) {
-        showPost(parseInt(params.get('post_id')));
-    } else if (params.get('category_id')) {
-        const catId = parseInt(params.get('category_id'));
-        const cat = allCategories.find(c => c.id === catId);
-        showCategory(catId, cat ? cat.name : 'Catégorie');
+};
+
+// Handle comment textarea focus — require auth
+window.handleCommentFocus = function(e) {
+    if (!window.currentUser) {
+        e.target.blur();
+        requireAuth(() => {
+            const input = document.getElementById('comment-input');
+            if (input) input.focus();
+        });
     }
 };
 

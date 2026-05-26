@@ -47,22 +47,46 @@ async function loadProfile() {
         tabsContainer.style.display = 'flex';
 
         // Check if viewing own profile
-        const meRes = await fetch('/api/me');
-        if (meRes.ok) {
-            const meData = await meRes.json();
-            if (meData.id !== data.id) {
+        try {
+            const meRes = await fetch('/api/me');
+            if (meRes.ok) {
+                const meData = await meRes.json();
+                if (meData.id !== data.id) {
+                    followBtn.style.display = 'block';
+                    updateFollowBtn(data.is_following);
+                    
+                    followBtn.onclick = () => {
+                        requireAuth(async () => {
+                            await fetch('/api/follow', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ target_id: data.id })
+                            });
+                            loadProfile(); // Recharger pour maj les compteurs
+                        });
+                    };
+                }
+            } else {
+                // Visiteur non connecté : afficher le bouton follow mais il déclenche la modale
                 followBtn.style.display = 'block';
-                updateFollowBtn(data.is_following);
-                
-                followBtn.onclick = async () => {
-                    await fetch('/api/follow', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ target_id: data.id })
+                followBtn.textContent = "S'abonner";
+                followBtn.style.backgroundColor = "var(--text-color)";
+                followBtn.style.color = "white";
+                followBtn.style.border = "none";
+                followBtn.onclick = () => {
+                    requireAuth(async () => {
+                        await fetch('/api/follow', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ target_id: data.id })
+                        });
+                        loadProfile();
                     });
-                    loadProfile(); // Recharger pour maj les compteurs
                 };
             }
+        } catch (e) {
+            // Network error, visitor mode
+            console.warn('Auth check on profile:', e);
         }
 
         loadFeed();
@@ -138,13 +162,15 @@ function escapeHTML(str) {
     return div.innerHTML;
 }
 
-window.react = async (postId, value) => {
-    await fetch('/api/react', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ target_type: 'post', target_id: postId, value })
+window.react = (postId, value) => {
+    requireAuth(async () => {
+        await fetch('/api/react', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ target_type: 'post', target_id: postId, value })
+        });
+        loadFeed();
     });
-    loadFeed();
 };
 
 tabPosts.addEventListener('click', () => {
