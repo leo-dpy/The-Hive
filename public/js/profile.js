@@ -144,7 +144,7 @@ async function loadFeed() {
                         <div class="post-actions">
                             <span class="action" onclick="react(${post.id}, 1)">▲ ${post.likes}</span>
                             <span class="action" onclick="react(${post.id}, -1)">▼ ${post.dislikes}</span>
-                            <span class="action" onclick="window.location.href='/explore.html?post_id=${post.id}'">💬 ${post.comment_count}</span>
+                            <span class="action" onclick="window.location.href='/explore.html?post_id=${post.id}'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>${post.comment_count}</span>
                         </div>
                     </div>
                 </div>

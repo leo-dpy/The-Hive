@@ -24,30 +24,36 @@ async function loadCategories() {
 
 async function loadFeed() {
     try {
-        let res;
-        // Si connecté, charger le feed "following". Sinon, le feed public.
+        let posts = [];
+        // Si connecté, charger le feed "following" d'abord
         if (window.currentUser) {
-            res = await fetch('/api/feed/following');
-            if (!res.ok) {
-                // Fallback sur le feed public
-                res = await fetch('/api/posts');
+            const followingRes = await fetch('/api/feed/following');
+            if (followingRes.ok) {
+                posts = await followingRes.json();
+            }
+            // Si le feed "following" est vide (nouveau compte, personne suivi),
+            // on charge le feed public pour que la page ne soit jamais vide
+            if (!posts || posts.length === 0) {
+                const publicRes = await fetch('/api/posts');
+                if (publicRes.ok) {
+                    posts = await publicRes.json();
+                }
             }
         } else {
-            res = await fetch('/api/posts');
+            const res = await fetch('/api/posts');
+            if (res.ok) {
+                posts = await res.json();
+            }
         }
-
-        const posts = await res.json();
         
         timeline.innerHTML = '';
         if (!posts || posts.length === 0) {
             timeline.innerHTML = `
                 <div style="text-align:center; margin-top: 40px;">
                     <p style="color:var(--text-muted); font-size:1.1rem; margin-bottom: 15px;">
-                        ${window.currentUser 
-                            ? "Vous ne suivez personne, ou vos abonnements n'ont rien publié." 
-                            : "Aucun post pour le moment. Revenez bientôt !"}
+                        Aucun post pour le moment. Soyez le premier à publier !
                     </p>
-                    <button class="btn-small" onclick="window.location.href='/explore.html'">Découvrir des Abeilles</button>
+                    <button class="btn-small" onclick="document.getElementById('post-content').focus()">Écrire un post</button>
                 </div>
             `;
             return;
@@ -70,7 +76,7 @@ async function loadFeed() {
                         <div class="post-actions">
                             <span class="action" onclick="reactWithAuth(${post.id}, 1)">▲ ${post.likes}</span>
                             <span class="action" onclick="reactWithAuth(${post.id}, -1)">▼ ${post.dislikes}</span>
-                            <span class="action" onclick="window.location.href='/explore.html?post_id=${post.id}'">💬 ${post.comment_count}</span>
+                            <span class="action" onclick="window.location.href='/explore.html?post_id=${post.id}'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>${post.comment_count}</span>
                         </div>
                     </div>
                 </div>
