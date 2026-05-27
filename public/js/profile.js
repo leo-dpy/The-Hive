@@ -47,22 +47,46 @@ async function loadProfile() {
         tabsContainer.style.display = 'flex';
 
         // Check if viewing own profile
-        const meRes = await fetch('/api/me');
-        if (meRes.ok) {
-            const meData = await meRes.json();
-            if (meData.id !== data.id) {
+        try {
+            const meRes = await fetch('/api/me');
+            if (meRes.ok) {
+                const meData = await meRes.json();
+                if (meData.id !== data.id) {
+                    followBtn.style.display = 'block';
+                    updateFollowBtn(data.is_following);
+                    
+                    followBtn.onclick = () => {
+                        requireAuth(async () => {
+                            await fetch('/api/follow', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ target_id: data.id })
+                            });
+                            loadProfile(); // Recharger pour maj les compteurs
+                        });
+                    };
+                }
+            } else {
+                // Visiteur non connecté : afficher le bouton follow mais il déclenche la modale
                 followBtn.style.display = 'block';
-                updateFollowBtn(data.is_following);
-                
-                followBtn.onclick = async () => {
-                    await fetch('/api/follow', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ target_id: data.id })
+                followBtn.textContent = "S'abonner";
+                followBtn.style.backgroundColor = "var(--text-color)";
+                followBtn.style.color = "white";
+                followBtn.style.border = "none";
+                followBtn.onclick = () => {
+                    requireAuth(async () => {
+                        await fetch('/api/follow', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ target_id: data.id })
+                        });
+                        loadProfile();
                     });
-                    loadProfile(); // Recharger pour maj les compteurs
                 };
             }
+        } catch (e) {
+            // Network error, visitor mode
+            console.warn('Auth check on profile:', e);
         }
 
         loadFeed();
@@ -120,7 +144,7 @@ async function loadFeed() {
                         <div class="post-actions">
                             <span class="action" onclick="react(${post.id}, 1)">▲ ${post.likes}</span>
                             <span class="action" onclick="react(${post.id}, -1)">▼ ${post.dislikes}</span>
-                            <span class="action" onclick="window.location.href='/explore.html?post_id=${post.id}'">💬 ${post.comment_count}</span>
+                            <span class="action" onclick="window.location.href='/explore.html?post_id=${post.id}'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>${post.comment_count}</span>
                         </div>
                     </div>
                 </div>
@@ -138,13 +162,15 @@ function escapeHTML(str) {
     return div.innerHTML;
 }
 
-window.react = async (postId, value) => {
-    await fetch('/api/react', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ target_type: 'post', target_id: postId, value })
+window.react = (postId, value) => {
+    requireAuth(async () => {
+        await fetch('/api/react', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ target_type: 'post', target_id: postId, value })
+        });
+        loadFeed();
     });
-    loadFeed();
 };
 
 tabPosts.addEventListener('click', () => {
